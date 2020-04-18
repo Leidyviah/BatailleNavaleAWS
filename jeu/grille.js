@@ -1,0 +1,256 @@
+var Boat = require('./bateau.js'); 
+
+function battleship() {
+
+	this.grid =  [
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+	];
+
+	//grille de l'adversaire
+	this.attack_grid = [
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+		];
+
+
+	//ce sont les 5 bateaux qui sont dans les règles du jeu
+	this.boats = {
+		'carrier': new Boat('carrier', 5),
+		'battleship': new Boat('battleship', 4),
+		'cruiser': new Boat('cruiser', 3),
+		'submarine': new Boat('submarine', 3),
+		'destroyer': new Boat('destroyer', 2),
+	};
+
+	this.areBoatsSet = false;
+	this.isTurn = false;
+
+
+	//vérifie si un bateau se trouve dans les coordonnées (x,y)
+	this.checkPosition = function (x, y) {
+		if (this.grid[x][y] == 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	};
+
+	
+	 //vérifie si ses coordonnées ont déjà été testées
+	this.areAttackCoordinatesTested = function(x,y) {
+		if(this.attack_grid[x][y] == 0 || this.attack_grid[x][y] == 1) {
+			return false;
+		}
+		return true;
+	};
+
+	
+	//Attaque la grille enemie et changer sa valeur, 0 y'a rien, 1 y'a un bateau, 2 tir manqué, 3 tir touché, 4 bateau coulé
+	this.attackEnemy = function(coordinates, enemyPlayer) {
+
+		var x = coordinates[0];
+		var y = coordinates[1];
+
+		if (this.areAttackCoordinatesTested(x,y)) {
+			console.log('Vous avez déjà tiré ici.');
+			return false;
+		}
+
+		if (enemyPlayer.battleship.checkPosition(x,y)) {
+
+			enemyPlayer.battleship.grid[x][y] = 3;
+			this.attack_grid[x][y] = 3;
+
+	
+			var hitBoat = enemyPlayer.battleship.findHitBoat(x, y);
+
+			// Sink the boat if it was completely destroyed
+			enemyPlayer.battleship.sinkBoatIfDestroyed(hitBoat.name);
+			this.sinkEnemyBoatIfDestroyed(hitBoat.name, enemyPlayer);
+		}
+		else {
+			enemyPlayer.battleship.grid[x][y] = 2;
+			this.attack_grid[x][y] = 2;
+		}
+	};
+
+
+	//vérifie si tout les bateaux ont été coulé (fin de la partie)
+	this.isFleetDestroyed = function() {
+		flag = true;
+		for (boat in this.boats) {
+			if (!this.boats[boat].isSunk) {
+				flag = false;
+			}
+		}
+		return flag;
+	}
+
+
+	//vérifie si la position du bateau est valide
+	this.positionIsNotValid = function(boat_name) {
+
+		var boat = this.boats[boat_name];
+		var error = [];//tableau contenant les erreurs faites
+
+		for (var i=0; i<boat.coordinatesList.length; i++) {
+			if (!this.isInGrid(boat.coordinatesList[i])) {
+				error.push(boat.name + ' n\'est pas bien placé.')
+			}
+			if (!isZoneAvailable(boat.coordinatesList[i], this.grid)) {
+				error.push( boat.name + ' est trop près d\'un autre bateau')
+			}
+		}
+		if (error.length == 0) {
+			return false;
+		}
+		return error;
+	};
+
+	
+
+	//placer les bateau dans la grille du joueur
+	this.setBoat = function (boat_name) {
+		
+		if (this.positionIsNotValid(boat_name)) {
+			throw new Error({message: 'Position non valide'});
+		}
+
+        var boat = this.boats[boat_name];
+        for (var i = 0; i < boat.size; i++) {
+            this.grid[boat.coordinatesList[i][0]][boat.coordinatesList[i][1]] = 1;
+        }
+
+        boat.isSet = true;
+	};
+
+
+
+	//génération aléatoire des bateaux
+	this.randomSetBoats = function () {
+
+		for (var boat in this.boats) {
+
+			while (!this.boats[boat].isSet) {
+
+				var i = Math.floor(Math.random() * 10); // entier aléatoire entre 0 et 9
+				var j = Math.floor(Math.random() * 10); 
+				var rnd = Math.floor(Math.random() + 0.5); // booléen aléatoire
+
+				var dir = "down".repeat(rnd) + "right".repeat(1-rnd);//selection aléatoire de la direction
+
+				this.boats[boat].setPosition([i, j], dir);
+				this.boats[boat].setCoordinatesList();
+
+				if (!this.positionIsNotValid(boat)) {
+					this.setBoat(boat);
+				}
+			}
+		}
+	}
+
+	//retourne le bateau qui vient d'être touché
+	this.findHitBoat = function(x, y) {
+
+		for (boat in this.boats) {
+			for (coordinates of this.boats[boat].coordinatesList) {
+				if (coordinates[0] == x && coordinates[1] == y) {
+					return this.boats[boat];
+				}
+			}
+		}
+	};
+
+
+	//couler le bateau
+	this.sinkBoatIfDestroyed = function(boat_name) {
+
+		var test = true;
+		for (coordinates of this.boats[boat_name].coordinatesList) {
+			var x = coordinates[0];
+			var y = coordinates[1];
+			if (this.grid[x][y] != 3) {
+				test = false;
+				break;
+			}
+		}
+
+		if (test) {
+			this.boats[boat_name].sink();
+			for (coordinates of this.boats[boat_name].coordinatesList) {
+				var x = coordinates[0];
+				var y = coordinates[1];
+				this.grid[x][y] = 4;
+			}
+		}
+	};
+
+
+	//couler le bateau enemie
+	this.sinkEnemyBoatIfDestroyed = function(boat_name, enemyPlayer) {
+
+		if (enemyPlayer.battleship.boats[boat_name].isSunk) {
+
+			for (coordinates of enemyPlayer.battleship.boats[boat_name].coordinatesList) {
+				var x = coordinates[0];
+				var y = coordinates[1];
+
+				this.attack_grid[x][y] = 4;
+			}
+		}
+	}
+
+
+	//vérifie si le bateau peut être placé ici (petit code trouver sur un forum)
+	this.isInGrid = function(coordinates) {
+
+		if (Math.min(9, Math.max(coordinates[0],0)) != coordinates[0] ) {
+	        return false;
+	    }
+
+	    if (Math.min(9, Math.max(coordinates[1],0)) != coordinates[1] ) {
+	        return false;
+	    }
+
+	    return true;
+	};
+};
+
+//le nom est explicite
+	function isZoneAvailable(coordinates, currentGrid) {
+		var x = coordinates[0];
+		var y = coordinates[1];
+
+		for (var i = x-1; i <= x+1; i++) {
+			for (var j = y-1; j <= y+1; j++) {
+				if (i>=0 && i<=9 && j>=0 && j<=9) {
+					if (currentGrid[i][j] != 0) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	};
+
+
+
+module.exports = battleship;
