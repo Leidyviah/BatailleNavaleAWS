@@ -9,8 +9,8 @@ var router = express.Router();
 
 router.get('/', function(req, res) {
 	var correctRoute = gameServer.sendRoute(req.session.username);
-	if (correctRoute == '/initialization' || correctRoute == '/setBoats') {
-	 	res.render('initialize');
+	if (correctRoute == '/joueurs' ) {
+	 	res.render('joueurs');
 	 }
 	 else {
 	 	res.redirect(correctRoute);

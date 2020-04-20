@@ -1,0 +1,26 @@
+
+<div class="container">
+    <h2>Parties List</h2>
+    <table class="table table-striped" id="mytable">
+      <thead>
+        <tr>
+          <th>Partie ID</th>
+          <th>Gagnant </th>
+          <th>Perdu </th>
+          <th>Score gagnat</th>
+          <th>score perdu</th>
+        </tr>
+      </thead>
+      <tbody>
+         <% results.forEach(function(res){ %>
+            <tr>
+                <td><%= res.id %></td>
+                <td><%= res.gagnant %></td>
+                <td><%= res.perdu %></td>
+                <td><%= res.score_g %></td>
+                <td><%= res.score_p %></td>
+            </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>

@@ -1,0 +1,25 @@
+
+<div class="container">
+    <h2>Joueurs List</h2>
+    <table class="table table-striped" id="mytable">
+      <thead>
+        <tr>
+          <th>Joeurs ID</th>
+          <th>Joeur Name</th>
+          <th>Email</th>
+          <th>username</th>
+        </tr>
+      </thead>
+      <tbody>
+         <% results.forEach(function(res){ %>
+            <tr>
+                <td><%= res.id %></td>
+                <td><%= res.fullname %></td>
+                <td><%= res.email %></td>
+                <td><%= res.username %></td>
+                
+            </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>

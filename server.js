@@ -75,7 +75,8 @@ module.exports = {
 };
 
 /***************************** ROUTES *****************************************************************************************/
-
+var insc = require('./routes/insc');
+app.use('/insc', insc);
 var initialization = require('./routes/initialization');
 app.use('/initialization', initialization);
 var join = require('./routes/join');
@@ -90,6 +91,10 @@ var solo = require('./routes/solo');
 app.use('/solo', solo);
 var logout = require('./routes/logout');
 app.use('/logout', logout);
+var joeur = require('./routes/joueurs');
+app.use('/joueurs', joeur);
+var partie = require('./routes/parties');
+app.use('/parties', partie);
 
 
 /*******************ROUTE PRINCIPALE***************************/
