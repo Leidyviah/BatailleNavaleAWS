@@ -96,8 +96,9 @@ var solo = require('./routes/solo');
 app.use('/solo', solo);
 var logout = require('./routes/logout');
 app.use('/logout', logout);
-/*var joeur = require('./routes/joueurs');
-app.use('/joueurs', joeur);
+var login = require('./routes/loginn');
+app.use('/loginn', login);
+/*
 var partie = require('./routes/parties');
 app.use('/parties', partie);*/
 //app.get('/', routes.index);

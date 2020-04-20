@@ -6,7 +6,7 @@ exports.save =function(req, res) {
   let sql = "INSERT INTO joueurs SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
-    res.redirect('/login');
+    res.redirect('/loginn');
      res.end();
   });
   }else {
