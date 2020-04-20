@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
 
 
         
-        res.redirect('insc')
+        res.render('insc')
 
 	
     //else
