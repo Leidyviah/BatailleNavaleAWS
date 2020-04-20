@@ -43,6 +43,9 @@ exports.list = function(req, res)  {
   });
 };
 // liste parties
+var db = require("../jeu/connexion_db.js");
+var conn=db.getConnexionDb();
+
 exports.parties = function(req, res)  {
   conn=db.getConnexionDb();
   let sql = "select p.id,j1.username as gagnant,j2.username as perdu,p.score_g, p.score_p from parties p join joueurs j1 on j1.id=p.id_gagnant join joueurs j2 on j2.id=p.id_perdu";
