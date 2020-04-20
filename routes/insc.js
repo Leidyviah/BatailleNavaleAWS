@@ -8,13 +8,21 @@ var router = express.Router();
 
 
 router.get('/', function(req, res) {
-	var correctRoute = gameServer.sendRoute(req.session.username);
-	if (correctRoute == '/insc' ) {
-	 	res.render('insc');
-	 }
-	 else {
-	 	res.redirect(correctRoute);
-	 }
+	var username = req.session.username;
+
+	if (username) {
+        
+        res.redirect('insc')
+		
+	}
+	
+    else
+    {
+		var correctRoute = gameServer.sendRoute(req.session.username);
+		res.redirect(correctRoute);
+    }
+	
+	
 	 
 });
 

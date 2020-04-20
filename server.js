@@ -48,6 +48,11 @@ app.set('view engine', 'ejs');
 
 
 var gameServer = new gameServer();//explicite
+//database
+
+var db = require("./jeu/connexion_db.js");
+
+var conn=db.getConnexionDb();
 
 /******************************* SOCKETS********************************************************************************/
 
