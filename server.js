@@ -80,8 +80,8 @@ module.exports = {
 };
 
 /***************************** ROUTES *****************************************************************************************/
-/*var insc = require('./routes/insc');
-app.use('/insc', insc);*/
+var insc = require('./routes/insc');
+app.use('/insc', insc);
 var initialization = require('./routes/initialization');
 app.use('/initialization', initialization);
 var join = require('./routes/join');
