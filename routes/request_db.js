@@ -1,4 +1,4 @@
-exports.login =function(req, res) => {
+exports.insc =function(req, res) {
   if(req.body.password==req.body.password2){
   let data = {email: req.body.email, username: req.body.username, fullname: req.body.fullname,password: req.body.password};
   let sql = "INSERT INTO joueurs SET ?";
@@ -11,7 +11,7 @@ exports.login =function(req, res) => {
 res.redirect('/insc');
 res.end();
   }
-});
+};
 exports.auth = function(request, response) {
     var username = request.body.username;
     var password = request.body.password;
@@ -30,8 +30,8 @@ exports.auth = function(request, response) {
         response.send('Veuillez ajouter votre nom d\'utilisateur et votre mots de passe !');
         response.end();
     }
-});
-exports.list = function(req, res) => {
+};
+exports.list = function(req, res)  {
 
   let sql = "SELECT * FROM joueurs";
   let query = conn.query(sql, (err, results) => {
@@ -41,9 +41,9 @@ exports.list = function(req, res) => {
     });
     res.end();
   });
-});
+};
 // liste parties
-exports.parties = function(req, res) => {
+exports.parties = function(req, res)  {
   conn=db.getConnexionDb();
   let sql = "select p.id,j1.username as gagnant,j2.username as perdu,p.score_g, p.score_p from parties p join joueurs j1 on j1.id=p.id_gagnant join joueurs j2 on j2.id=p.id_perdu";
   let query = conn.query(sql, (err, results) => {
@@ -53,11 +53,11 @@ exports.parties = function(req, res) => {
     });
     res.end();
   });
-});
+};
 
 //sauvegarder une partie
 
-exports.sauv = function(req, res) => {
+exports.sauv = function(req, res) {
   
   let data = {id: req.query.id, id_gagnant: req.query.id_gagnant, id_perdu: req.query.id_perdu,score_g: req.query.score_g,score_p: req.query.score_p};
   let sql = "INSERT INTO parties SET ?";
@@ -68,4 +68,4 @@ exports.sauv = function(req, res) => {
     });
     res.end();
   });
-});
+};

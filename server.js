@@ -101,12 +101,11 @@ app.use('/joueurs', joeur);
 var partie = require('./routes/parties');
 app.use('/parties', partie);*/
 //app.get('/', routes.index);
-var db_route = require('./routes/customers');
+var db_route = require('./routes/request_db');
 app.get('/joueurs', db_route.list);
-app.get('/insc', db_route.add);
+app.get('/insc', db_route.insc);
 app.post('/parties', db_route.parties);
 app.get('/auth', db_route.auth);
-app.get('/login', db_route.login);
 app.post('/sauv',db_route.sauv);
 
 /*******************ROUTE PRINCIPALE***************************/
