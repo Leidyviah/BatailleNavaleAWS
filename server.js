@@ -106,8 +106,8 @@ var db_route = require('./routes/request_db');
 app.get('/joueurs', db_route.list);
 //app.get('/insc', db_route.insc);
 app.get('/parties', db_route.parties);
-app.get('/auth', db_route.auth);
-app.post('/sauv',db_route.sauv);
+app.post('/auth', db_route.auth);
+app.get('/sauv',db_route.sauv);
 app.post('/save',db_route.save);
 
 /*******************ROUTE PRINCIPALE***************************/
