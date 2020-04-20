@@ -1,4 +1,4 @@
-exports.insc =function(req, res) {
+exports.save =function(req, res) {
   if(req.body.password==req.body.password2){
   let data = {email: req.body.email, username: req.body.username, fullname: req.body.fullname,password: req.body.password};
   let sql = "INSERT INTO joueurs SET ?";

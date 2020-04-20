@@ -103,10 +103,11 @@ app.use('/parties', partie);*/
 //app.get('/', routes.index);
 var db_route = require('./routes/request_db');
 app.get('/joueurs', db_route.list);
-app.get('/insc', db_route.insc);
-app.post('/parties', db_route.parties);
+//app.get('/insc', db_route.insc);
+app.get('/parties', db_route.parties);
 app.get('/auth', db_route.auth);
 app.post('/sauv',db_route.sauv);
+app.post('/save',db_route.save);
 
 /*******************ROUTE PRINCIPALE***************************/
 app.get('/', function(req, res) {
