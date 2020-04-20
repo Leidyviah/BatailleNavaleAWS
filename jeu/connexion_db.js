@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `joueurs` (
   email varchar(255) NOT NULL,
   username varchar(255) NOT NULL,
   fullname varchar(255) NOT NULL,
-  password password char(40) character set ascii NOT NULL
+  password  char(40) character set ascii NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `parties` (

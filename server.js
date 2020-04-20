@@ -80,8 +80,8 @@ module.exports = {
 };
 
 /***************************** ROUTES *****************************************************************************************/
-var insc = require('./routes/insc');
-app.use('/insc', insc);
+/*var insc = require('./routes/insc');
+app.use('/insc', insc);*/
 var initialization = require('./routes/initialization');
 app.use('/initialization', initialization);
 var join = require('./routes/join');
@@ -96,11 +96,18 @@ var solo = require('./routes/solo');
 app.use('/solo', solo);
 var logout = require('./routes/logout');
 app.use('/logout', logout);
-var joeur = require('./routes/joueurs');
+/*var joeur = require('./routes/joueurs');
 app.use('/joueurs', joeur);
 var partie = require('./routes/parties');
-app.use('/parties', partie);
-
+app.use('/parties', partie);*/
+//app.get('/', routes.index);
+var db_route = require('./routes/customers');
+app.get('/joueurs', db_route.list);
+app.get('/insc', db_route.add);
+app.post('/parties', db_route.parties);
+app.get('/auth', db_route.auth);
+app.get('/login', db_route.login);
+app.post('/sauv',db_route.sauv);
 
 /*******************ROUTE PRINCIPALE***************************/
 app.get('/', function(req, res) {
@@ -112,9 +119,10 @@ app.get('/', function(req, res) {
 	 	res.redirect(correctRoute);
 	 }
 });
+//
 
 
-//app
+//on ecote app
 const listener = server.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
