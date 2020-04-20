@@ -1,3 +1,5 @@
+var db = require("../jeu/connexion_db.js");
+var conn=db.getConnexionDb();
 exports.save =function(req, res) {
   if(req.body.password==req.body.password2){
   let data = {email: req.body.email, username: req.body.username, fullname: req.body.fullname,password: req.body.password};
@@ -43,8 +45,7 @@ exports.list = function(req, res)  {
   });
 };
 // liste parties
-var db = require("../jeu/connexion_db.js");
-var conn=db.getConnexionDb();
+
 
 exports.parties = function(req, res)  {
   conn=db.getConnexionDb();
