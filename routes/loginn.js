@@ -10,16 +10,18 @@ var router = express.Router();
 router.get('/', function(req, res) {
 	var username = req.session.username;
 
-
+if(request.session.ID) {
         
-        res.render('loginn')
+        var correctRoute = gameServer.sendRoute(req.session.username);
+		res.redirect(correctRoute);
+        
 
+	}
+   else
+   {
+   	res.render('loginn');
 	
-    //else
-    //{
-		//var correctRoute = gameServer.sendRoute(req.session.username);
-		//res.redirect(correctRoute);
-    //}
+ }
 	
 	
 	 

@@ -21,6 +21,7 @@ exports.auth = function(request, response) {
         conn.query('SELECT * FROM joueurs WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
             if (results.length > 0) {
                 request.session.loggedin = true;
+                request.session.ID = results.id;
                 request.session.username = username;
                 response.redirect('/joueurs');
             } else {
