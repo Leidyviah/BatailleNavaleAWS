@@ -114,7 +114,7 @@ app.get('/log_out',db_route.logout);//pour se deconnecter
 app.get('/', function(req, res) {
 	var correctRoute = gameServer.sendRoute(req.session.username);
 	//je teste si le joueur est deja connceter ou pas 
-	if (req.session.loggedin) {
+	//if (req.session.loggedin) {
 
 	if (correctRoute == '/') {
 	 	res.render('welcome');
@@ -122,9 +122,7 @@ app.get('/', function(req, res) {
 	 else {
 	 	res.redirect(correctRoute);
 	 }
-	 }else{
-         res.render('loginn');
-	 }
+	 
 });
 
 //
