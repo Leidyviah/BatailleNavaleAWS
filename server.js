@@ -113,13 +113,19 @@ app.post('/save',db_route.save);
 /*******************ROUTE PRINCIPALE***************************/
 app.get('/', function(req, res) {
 	var correctRoute = gameServer.sendRoute(req.session.username);
+	if (request.session.loggedin) {
+
 	if (correctRoute == '/') {
 	 	res.render('welcome');
 	 }
 	 else {
 	 	res.redirect(correctRoute);
 	 }
+	 }else{
+         res.render('loginn');
+	 }
 });
+
 //
 
 
