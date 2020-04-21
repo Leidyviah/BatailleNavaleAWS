@@ -10,7 +10,7 @@ var router = express.Router();
 router.get('/', function(req, res) {
 	var username = req.session.username;
 
-if(request.session.ID) {
+if(request.session.username) {
         
         var correctRoute = gameServer.sendRoute(req.session.username);
 		res.redirect(correctRoute);
