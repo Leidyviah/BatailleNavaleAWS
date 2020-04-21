@@ -102,17 +102,18 @@ app.use('/loginn', login);
 var partie = require('./routes/parties');
 app.use('/parties', partie);*/
 //app.get('/', routes.index);
-var db_route = require('./routes/request_db');
-app.get('/joueurs', db_route.list);
-//app.get('/insc', db_route.insc);
-app.get('/parties', db_route.parties);
-app.post('/auth', db_route.auth);
-app.get('/sauv',db_route.sauv);
-app.post('/save',db_route.save);
+var db_route = require('./routes/request_db');//inclure les routes des fonctions dans request_db
+app.get('/joueurs', db_route.list);//la lsite des jpueurs
 
+app.get('/parties', db_route.parties);//pour afficher les parties
+app.post('/auth', db_route.auth);//pour s'authentifier
+app.get('/sauv',db_route.sauv);//pour sauvgarder une partie
+app.post('/save',db_route.save);//pour ejouter un nouveau joueur
+app.get('/log_out',db_route.logout);//pour se deconnecter
 /*******************ROUTE PRINCIPALE***************************/
 app.get('/', function(req, res) {
 	var correctRoute = gameServer.sendRoute(req.session.username);
+	//je teste si le joueur est deja connceter ou pas 
 	if (request.session.loggedin) {
 
 	if (correctRoute == '/') {

@@ -1,21 +1,15 @@
 
- /*var conn = mysql.createConnection({
-  database: 'heroku_d613e59ba1c09d9',
-  host: "us-cdbr-iron-east-01.cleardb.net",
-  user: "b7794cbf5ee64d",
-  password: "ea46f1b8"
 
-});*/
-
- 
+// j'ai utiliser cette solution parce que le serveur se ferme à chaque fois donc je perds la connexion ç la base de données
 module.exports={
 
 getConnexionDb:function(){
 
  	console.log('Get connection ...');
  	var mysql = require('mysql');
+  //les informations sur la base de données
  var db_config = {
-  host: 'us-cdbr-iron-east-01.cleardb.net',
+    host: 'us-cdbr-iron-east-01.cleardb.net',
     user: 'b8b2cd6a0717d0',
     password: '7430245a',
     database: 'heroku_1ad342f3e6afa29'
@@ -24,25 +18,24 @@ getConnexionDb:function(){
 var connection;
 
 function handleDisconnect() {
-  connection = mysql.createConnection(db_config); // Recreate the connection, since
-                                                  // the old one cannot be reused.
+  connection = mysql.createConnection(db_config); // recrée la connexion tanqte que la premiere est fermee
 
-  connection.connect(function(err) {              // The server is either down
-    if(err) {                                     // or restarting (takes a while sometimes).
+  connection.connect(function(err) {              // le serveur est ferme ou relance
+    if(err) {                                  
       console.log('error when connecting to db:', err);
-      setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+      setTimeout(handleDisconnect, 2000); // on declare un temps d'attends pour  se connceter encore fois,
     } else{
     	
 
-    }                                    // to avoid a hot loop, and to allow our node script to
-  });                                     // process asynchronous requests in the meantime.
-                                          // If you're also serving http, display a 503 error.
+    }                                    
+  });                                     
+                                          
   connection.on('error', function(err) {
     console.log('db error', err);
-    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-      handleDisconnect();                         // lost due to either server restart, or a
-    } else {                                      // connnection idle timeout (the wait_timeout
-      throw err;                                  // server variable configures this)
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
+      handleDisconnect();                         
+    } else {                                      
+      throw err;                                  
     }
   });
 }
@@ -50,6 +43,8 @@ function handleDisconnect() {
 handleDisconnect();
 return connection;
 }};
+
+
 /*
 mysql://b8b2cd6a0717d0:7430245a@us-cdbr-iron-east-01.cleardb.net/heroku_1ad342f3e6afa29?reconnect=true
 mysql --host=us-cdbr-iron-east-01.cleardb.net --user=b8b2cd6a0717d0 --password=7430245a --reconnect heroku_1ad342f3e6afa29

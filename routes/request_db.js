@@ -1,5 +1,6 @@
 var db = require("../jeu/connexion_db.js");
 var conn=db.getConnexionDb();
+//s'inscrire (inserer un nouveau joueur)
 exports.save =function(req, res) {
   if(req.body.password==req.body.password2){
   let data = {email: req.body.email, username: req.body.username, fullname: req.body.fullname,password: req.body.password};
@@ -14,6 +15,7 @@ res.redirect('/insc');
 res.end();
   }
 };
+//pour se conncter au jeu
 exports.auth = function(request, response) {
     var username = request.body.username;
     var password = request.body.password;
@@ -34,6 +36,7 @@ exports.auth = function(request, response) {
         response.end();
     }
 };
+// liste des autres joueurs
 exports.list = function(req, res)  {
 
   let sql = "SELECT * FROM joueurs";
@@ -45,7 +48,7 @@ exports.list = function(req, res)  {
     res.end();
   });
 };
-// liste parties
+// liste parties 
 
 
 exports.parties = function(req, res)  {
@@ -74,6 +77,7 @@ exports.sauv = function(req, res) {
     res.end();
   });
 };
+//se deconnceter
 exports.logout=function(req,res,next){
   req.session.loggedin=false;
   res.redirect('/loginn');
