@@ -25,7 +25,7 @@ exports.auth = function(request, response) {
                 request.session.loggedin = true;
                 request.session.ID = results.id;
                 request.session.username = username;
-                response.redirect('/joueurs');
+                response.redirect('/');
             } else {
                 response.send('Le nom d\'utilisateur! ou/et le mots de passe incorrect(s)');
             }           
