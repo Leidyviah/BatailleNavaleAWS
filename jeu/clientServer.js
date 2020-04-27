@@ -233,14 +233,10 @@ var clientServer = function(gameServer, io) {
 		};
 		socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('attack', response);
 
-
-
-
 		response = {
 			message: "It is " + self.getEnemyPlayer(socket).username + "'s turn",
 			battleship: self.getUserBattleship(socket)
 		};
-
 
 		socket.emit('attack', response);
 	}
@@ -277,7 +273,7 @@ var clientServer = function(gameServer, io) {
 			if (player.isTurn) {
 				var coordinates = [attackCoordinates.row, attackCoordinates.col];
 
-				self.getUserBattleship(socket).attackEnemy(coordinates, enemyPlayer);
+				let att = self.getUserBattleship(socket).attackEnemy(coordinates, enemyPlayer);
 				self.sendAIResponse(socket);
 
 				if (enemyPlayer.battleship.isFleetDestroyed()) {

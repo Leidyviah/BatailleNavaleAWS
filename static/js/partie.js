@@ -3,6 +3,19 @@ var socket = io();
 
 Vue.http.options.emulateJSON = true;
 
+const redCross = "https://zupimages.net/up/20/15/q21v.png";
+const blackSlash = "https://zupimages.net/up/20/15/zqhx.png";
+
+function findBoatImg(boats, x, y) {
+	for (boat in boats) {
+		for (coord in boats[boat].coordinatesList) {
+			if (boats[boat].coordinatesList[coord][0] == x && boats[boat].coordinatesList[coord][1] == y) {
+				return {"img": boats[boat].imgSrcList[coord],
+					"dir": boats[boat].direction};
+			}
+		}
+	}
+};
 
 //vue contenant la liste des rooms
 var game = new Vue({
@@ -12,7 +25,8 @@ var game = new Vue({
 
 	//les donnée de la partie qui doivent être transmise à la page html
 	data: {
-		battleship : {grid: [], attack_grid: []},
+		battleship : {grid: [], attack_grid: [], 
+			boats: {}, enemySunkBoat: {}},
 		errors: [],
 		serverMessage: '',
 	},
@@ -56,12 +70,11 @@ var game = new Vue({
 		//attaquer
 		attack: function(row, col, event) {
 			socket.emit('attack', attackCoordinates = {row: row - 1, col: col - 1});
-
 		},
 
 		attackCellClass: function(row, col) {
 
-			var result = {};
+			let result = {};
 
 			//vérifie si la grille n'est pas définie, ce sera fait avant de recevoir les maj
 			if (this.battleship.attack_grid[row-1]) {
@@ -74,7 +87,7 @@ var game = new Vue({
 						result = {'btn-primary': true};
 						break;
 					case 2:
-						result = {'btn-success': true, 'bounceIn': true};
+						result = {'btn-basic': true, 'bounceIn': true};
 						break;
 					case 3:
 						result = {'btn-warning': true, 'bounceIn': true};
@@ -92,9 +105,35 @@ var game = new Vue({
 				return result;
 			}
 		},
+		
+		attackCellImg: function(row, col) {
+			let result = "&nbsp;"
+			if (this.battleship.attack_grid[row-1]) {
+				switch (this.battleship.attack_grid[row-1][col-1]) {
+					case 0:
+						result = "&nbsp;";
+						break;
+					case 1:
+						result = "&nbsp;";
+						break;
+					case 2:
+						result = "&nbsp;";
+						break;
+					case 3:
+						result = "<img src=\"" + redCross + "\" class:\"superposed\" />";
+						break;
+					case 4:
+						let img = findBoatImg(this.battleship.enemySunkBoat, row-1, col-1);
+						result = "<img src=\"" + img['img'] + "\" class=\"" + img['dir'] + "\" />"
+							+ "<img src=\"" + blackSlash + "\" class:\"superposed\" />";
+						break;
+				}
+			}
+			return result;
+		},
 
 		myCellClass: function(row, col) {
-			var result = {};
+			let result = {};
 
 			//vérifie si la grille n'est pas définie, ce sera fait avant de recevoir les maj
 			if (this.battleship.grid[row-1]) {
@@ -107,7 +146,7 @@ var game = new Vue({
 						result = {'btn-primary': true};
 						break;
 					case 2:
-						result = {'btn-success': true, 'bounceIn': true};
+						result = {'btn-basic': true, 'bounceIn': true};
 						break;
 					case 3:
 						result = {'btn-warning': true, 'bounceIn': true};
@@ -124,6 +163,35 @@ var game = new Vue({
 			else {
 				return result;
 			}
+		},
+		
+		myCellImg: function(row, col) {
+			let result = "&nbsp;"
+			if (this.battleship.grid[row-1]) {
+				switch (this.battleship.grid[row-1][col-1]) {
+					case 0:
+						result = "&nbsp;";
+						break;
+					case 1:
+						let img3 = findBoatImg(this.battleship.boats, row-1, col-1);
+						result = "<img src=\"" + img3['img'] + "\" class=\"" + img3['dir'] + "\" />";
+						break;
+					case 2:
+						result = "&nbsp;";
+						break;
+					case 3:
+						let img = findBoatImg(this.battleship.boats, row-1, col-1);
+						result = "<img src=\"" + img['img'] + "\" class=\"" + img['dir'] + "\" />"
+							+ "<img src=\"" + redCross + "\" class:\"superposed\" />";
+						break;
+					case 4:
+						let img2 = findBoatImg(this.battleship.boats, row-1, col-1);
+						result = "<img src=\"" + img2['img'] + "\" class=\"" + img2['dir'] + "\" />"
+							+ "<img src=\"" + blackSlash + "\" class:\"superposed\" />";
+						break;
+				}
+			}
+			return result;
 		},
 
 	},

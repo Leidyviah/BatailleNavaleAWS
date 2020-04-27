@@ -2,7 +2,6 @@ Vue.http.options.emulateJSON = true;
 
 var socket = io.connect();
 
-
 var boats = new Vue({//vue contenant la grille de jeu
 
     el: "#boats",
@@ -24,6 +23,7 @@ var boats = new Vue({//vue contenant la grille de jeu
             console.log(response);
         };
 
+		window.addEventListener('resize', this.repositionBoat);
 
         $(document).ready(function() {//j'ai rajouté ça pour ^que le drag and drop marche sur fireforx car sur chrome ça ne marche pas toujours (je ne sais pas pourquoi)
             window.setTimeout(boats.initializeDragAndDrop, 500);
@@ -56,13 +56,29 @@ var boats = new Vue({//vue contenant la grille de jeu
                 }
             }
         },
-
-
+		
+		repositionBoat: function (event) {
+			console.log("resize");
+			console.log(this.battleship.boats);
+			for(boat in this.battleship.boats) {
+				if (boats.battleship.boats[boat].isSet) {
+					let boatObject = $('#' + boat);
+					console.log(boatObject);
+					let coordinates = this.battleship.boats[boat].coordinates;
+					pos_top = $("#myGrid > .divTableBody > .divTableRow[value='" + (coordinates[0]+1) + "']").offset().top;
+					pos_left = $("#myGrid > .divTableBody > .divTableRow[value='" + (coordinates[0]+1) + "'] > .divTableCell[value='" + (coordinates[1]+1) + "']").offset().left;
+					boatObject.offset({
+						"left": pos_left,
+						"top": pos_top,
+					});
+				}
+			}
+		},
 
 
         //retour à la position initiale
         reset: function(boat_name) {
-            var boat = $('#' + boat_name);
+            let boat = $('#' + boat_name);
             boat.animate({
                 "left": 0,
                 "top": 0,
@@ -132,9 +148,12 @@ var boats = new Vue({//vue contenant la grille de jeu
 
 
         findCase: function(left, top) {
+			left = Math.round(left * 10^12)/(10^12);
+			top = Math.round(top * 10^12)/(10^12);
 
             for (var i = 1; i <= this.battleship.grid.length; i++) { // ERREUR ICI A ARRANGER
                 var pos_top = $("#myGrid > .divTableBody > .divTableRow[value='" + i + "']").offset().top;
+				pos_top = Math.round(pos_top * 10^12)/(10^12)
                 if (pos_top == top) {
                     break;
                 }
@@ -142,15 +161,14 @@ var boats = new Vue({//vue contenant la grille de jeu
 
             var k = Math.min(i, 10); 
 
-            for (var j = 1; j <= this.battleship.grid.length; j++) { 
-
+            for (var j = 1; j <= this.battleship.grid.length; j++) {
                 var pos_left = $("#myGrid > .divTableBody > .divTableRow[value='" + k + "'] > .divTableCell[value='" + j + "']").offset().left;
-
+				pos_left = Math.round(pos_left * 10^12)/(10^12);
                 if (pos_left == left) {
                     break;
                 }
             }
-
+			console.log(k-1, "=?", i-1, j-1,)
             return [i-1, j-1]; // If j-1
 
         },
