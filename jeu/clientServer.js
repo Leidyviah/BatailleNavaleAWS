@@ -36,6 +36,12 @@ var clientServer = function(gameServer, io) {
 			} else {
 				self.handleDisconnect(socket);
 			}
+			socket.on('new-user', function() {
+				socket.broadcast.emit('user-connected',self.getUsername(socket))
+				})
+				socket.on('send-chat-message', message => {
+					socket.broadcast.emit('chat-message', { message: message, name: self.getUsername(socket) })
+				})
 		});
 	};
 

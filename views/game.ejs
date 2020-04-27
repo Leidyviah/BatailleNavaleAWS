@@ -7,6 +7,14 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="/css/stylesheet.css">
         <title>AWS BATAILLE NAVALE</title>
+        <style>
+          #message-input {
+            color: black;
+          }
+          #send-button{
+            background-color: black;
+          }
+      </style>
     </head>
     <body>
 
@@ -96,6 +104,11 @@
           </div>
 
         </div>
+        <div id="message-container"></div>
+          <form id="send-container">
+            <input type="text" id="message-input">
+            <button type="submit" id="send-button">Send</button>
+          </form>
 
 
         <!-- JS -->
