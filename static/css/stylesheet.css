@@ -145,6 +145,27 @@ h5 {
 	left: 20px;
 }
 
+#message-container {
+	background-color: black;
+	border: 2px white solid;
+	width: 80%;
+	height: 13vh;
+	margin-left: auto;
+	margin-right: auto;
+	overflow-y: scroll;
+}
+
+#send-container {
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+}
+
+#message-input {
+	margin-left: 10%;
+	width: 75%;
+}
+
 .bounceIn {
 	animation-name: bounceIn;
 	animation-duration: 0.5s;
