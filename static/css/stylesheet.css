@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
+@font-face {
+	font-family: Bigboz;
+	src: url("Bigboz.otf");
+}
+
+
+body {
+	background-image: url("https://images7.alphacoders.com/568/568756.jpg");
+	font-family: 'Ubuntu', sans-serif;
+	color: white;
+}
+
+h1, h2, .divTableHeading {
+	font-family: Bigboz;
+  	font-size: 25px;
+}
+
+.center {
+	margin-left: auto;
+	margin-right: auto;
+}
+.no-padding {
+	padding: 0;
+}
+.no-margin {
+	margin: 0;
+}
+
+.centerVertical {
+  position:absolute;
+  top:50%;
+  left:50%;
+  padding:15px;
+  -webkit-transform: translate(-50%,-50%);
+}
+
+.divTable{
+	display: table;
+	border: none;
+}
+
+.divTableRow {
+	display: table-row;
+}
+
+.divTableCell, .divTableHead {
+	border: 1px solid #ccc;
+	display: table-cell;
+	padding: 0px;
+	width: 50px;
+	height: 50px;
+	min-width: 50px;
+	min-height: 50px;
+}
+.divTableHeading {
+	border:none;
+	vertical-align:middle;
+	text-align:center;
+}
+
+.divTableBody {
+	display: table-row-group;
+	width: auto;
+}
+
+#serverMessage {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+#logoutButton {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+}
+
+.bounceIn {
+	animation-name: bounceIn;
+	animation-duration: 0.5s;
+}
+
+.title {
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+.boatsTable {
+	z-index: 1;
+	transition: transform 0.3s ease-in-out;
+}
+
+#attackGrid .btn-primary, #attackGrid .btn-success, #attackGrid .btn-warning, #attackGrid .btn-danger {
+	pointer-events: none;
+}
+
+#myGrid {
+	pointer-events: none;
+}
+
+#attackGrid .btn-primary, #attackGrid .btn-success, #attackGrid .btn-warning, #attackGrid .btn-danger {
+	pointer-events: none;
+}
+
+.setBoatsTable {
+	margin-top: 5%;
+}
+
+.boatsTable > .divTableBody > .divTableRow > .divTableCell {
+	background-color: purple;
+}
+
+
+/*ne marche pas sur google chrome*/
+.rotated {
+	transform: rotate(90deg);
+	transition: transform 0.3s ease-in-out;
+}

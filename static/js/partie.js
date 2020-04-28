@@ -1,0 +1,153 @@
+// Connection du client to socket.io
+var socket = io();
+const messageContainer = document.getElementById('message-container')
+const messageForm = document.getElementById('send-container')
+const messageInput = document.getElementById('message-input')
+
+Vue.http.options.emulateJSON = true;
+
+
+//vue contenant la liste des rooms
+var game = new Vue({
+
+	//l'id du DIV
+	el: '#game',
+
+	//les donnée de la partie qui doivent être transmise à la page html
+	data: {
+		battleship : {grid: [], attack_grid: []},
+		errors: [],
+		serverMessage: '',
+	},
+
+	
+	//cette fonction est appelée quand la vue est déjà créée
+	created: function() {
+
+		// MAJ des grilles quand une attaque a été effectuée
+		socket.on('attack', function(response) {
+			this.battleship  = response.battleship;
+			this.serverMessage = response.message;
+		}.bind(this));
+
+		// envoyer un message disant d'attendre
+		socket.on('wait', function(response) {
+			this.serverMessage = response.message;
+		}.bind(this));
+
+		// à la fin de la partie envoyer un message disant 'gg wp' ou bien 'you lose' 
+		socket.on('finish', function(response) {
+			this.serverMessage = response.message;
+			$('#myModal').modal('show');
+		}.bind(this));
+
+		//déconnexion
+		socket.on('logout', function(response) {
+			window.location.href = '/logout';
+		});
+		appendMessage('You joined')
+		socket.emit('new-user', "Welcome")
+
+		socket.on('chat-message', data => {
+			appendMessage(`${data.name}: ${data.message}`)
+		})
+
+		messageForm.addEventListener('submit', e => {
+ 		 	e.preventDefault()
+  			const message = messageInput.value
+  			appendMessage(`You: ${message}`)
+  			socket.emit('send-chat-message', message)
+  			messageInput.value = ''
+		});
+
+		function appendMessage(message) {
+  			const messageElement = document.createElement('div')
+  			messageElement.innerText = message
+  			messageContainer.append(messageElement)
+		}
+
+	
+		//récupérer les informations de la grille (bateaux)
+	    this.$http.get('/game/getBattleship').then(function(response) {
+	        this.battleship = response.body.battleship;
+	    });
+	},
+
+	// ce sont les méthodes à utiliser dans l'app (on les stock ici)
+	methods: {
+		
+		//attaquer
+		attack: function(row, col, event) {
+			socket.emit('attack', attackCoordinates = {row: row - 1, col: col - 1});
+
+		},
+
+		attackCellClass: function(row, col) {
+
+			var result = {};
+
+			//vérifie si la grille n'est pas définie, ce sera fait avant de recevoir les maj
+			if (this.battleship.attack_grid[row-1]) {
+				//retourne une classe selon la valeur de la case
+				switch (this.battleship.attack_grid[row-1][col-1]) {
+					case 0:
+						result = {'btn-default': true};
+						break;
+					case 1:
+						result = {'btn-primary': true};
+						break;
+					case 2:
+						result = {'btn-success': true, 'bounceIn': true};
+						break;
+					case 3:
+						result = {'btn-warning': true, 'bounceIn': true};
+						break;
+					case 4:
+						result = {'btn-danger': true, 'bounceIn': true};
+						break;
+					default:
+						result = {};
+						break;
+				}
+				return result;
+			}
+			else {
+				return result;
+			}
+		},
+
+		myCellClass: function(row, col) {
+			var result = {};
+
+			//vérifie si la grille n'est pas définie, ce sera fait avant de recevoir les maj
+			if (this.battleship.grid[row-1]) {
+				//retourne une classe selon la valeur de la case
+				switch (this.battleship.grid[row-1][col-1]) {
+					case 0:
+						result = {'btn-default': true};
+						break;
+					case 1:
+						result = {'btn-primary': true};
+						break;
+					case 2:
+						result = {'btn-success': true, 'bounceIn': true};
+						break;
+					case 3:
+						result = {'btn-warning': true, 'bounceIn': true};
+						break;
+					case 4:
+						result = {'btn-danger': true, 'bounceIn': true};
+						break;
+					default:
+						result = {};
+						break;
+				}
+				return result;
+			}
+			else {
+				return result;
+			}
+		},
+
+	},
+});
