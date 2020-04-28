@@ -6,36 +6,25 @@ var socket = require('socket.io'); // Communication client serveur
 var ejs = require('ejs');
 var bodyParser = require('body-parser'); 
 var cookieParser = require('cookie-parser');
-var session = require("express-session");
-var MySQLStore          = require('express-mysql-session')(session);
 var sharedsession = require("express-socket.io-session")
 var cookieSession = require('cookie-session');
-
+var router=express.Router();
 //A relire  la doc pour mieux comprendre
-/*var session = require("express-session")({
+var session = require("express-session")({
   secret: "ZEHIU5348TQG8VT4VUJEZYSY483YA",
   resave: true,
   saveUninitialized: true
 }); 
 
-*/
+
 var gameServer = require('./jeu/gameServer.js');
 
 /**************************************************************************INITIALISATION**************************/
 
-var db = require("./jeu/connexion_db.js");
 
-var connection = db.getConnexionDb();; // or mysql.createPool(options);
-var sessionStore = new MySQLStore({}/* session store options */, connection);
 var app = express();
-app.use(session({
-    key: 'session_cookie_name',
-    secret: 'session_cookie_secret',
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false
-}));
-//app.use(session); 
+
+app.use(session); 
 var server = http.createServer(app);//création du serveur 
 
 
@@ -149,6 +138,7 @@ app.get('/', function(req, res) {
 
 //
 
+module.exports = router;
 //on ecote app
 const listener = server.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
