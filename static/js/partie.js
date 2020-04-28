@@ -1,5 +1,8 @@
 // Connection du client to socket.io
 var socket = io();
+const messageContainer = document.getElementById('message-container')
+const messageForm = document.getElementById('send-container')
+const messageInput = document.getElementById('message-input')
 
 Vue.http.options.emulateJSON = true;
 

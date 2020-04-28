@@ -40,7 +40,7 @@ var clientServer = function(gameServer, io) {
 				socket.broadcast.emit('user-connected',self.getUsername(socket))
 				})
 				socket.on('send-chat-message', message => {
-					socket.broadcast.emit('chat-message', { message: message, name: self.getUsername(socket) })
+					socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('chat-message', { message: message, name: self.getUsername(socket) })
 				})
 		});
 	};
