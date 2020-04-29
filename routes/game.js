@@ -7,10 +7,10 @@ var router = express.Router();
 
 
 
-router.get('/', function(req, res) {
-	var correctRoute = gameServer.sendRoute(req.session.username);
-	if (correctRoute == '/game') {
-	 	res.render('game');
+router.get('/:id', function(req, res) {
+	var correctRoute = gameServer.sendRoute(req.session.username, req.params.id);
+	if (correctRoute == '/game/' + req.params.id) {
+	 	res.render('game', {id: req.params.id});
 	 }
 	 else {
 	 	res.redirect(correctRoute);
@@ -20,16 +20,16 @@ router.get('/', function(req, res) {
 
 
 //donner au client sa grille
-router.get('/getBattleship', function(req, res) {
+router.get('/:id/getBattleship', function(req, res) {
 
 	if (req.session.username) {  
 
 		var username = req.session.username;
 
-		if (gameServer.players[username].game) {
-			if (!gameServer.players[username].game.isAvailable()) {
+		if (gameServer.players[username].runningGames[req.params.id]["game"]) {
+			if (!gameServer.players[username].runningGames[req.params.id]["game"].isAvailable()) {
 
-				var battleship = gameServer.players[username].battleship;
+				var battleship = gameServer.players[username].runningGames[req.params.id]["battleship"];
 				res.send({battleship: battleship})
 
 			}
@@ -38,6 +38,10 @@ router.get('/getBattleship', function(req, res) {
 	else {
 		res.status(400).send({errors: 'You\'re not connected'});
 	}
+});
+
+router.use(function(req, res, next) {
+	res.redirect(gameServer.sendRoute(req.session.username, null))
 });
 
 module.exports = router;

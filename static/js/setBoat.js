@@ -16,7 +16,7 @@ var boats = new Vue({//vue contenant la grille de jeu
 
     /********************************LA MAJORITE DES METHODES ONT DEJA ETE IMPLEMENTEES AVANT DANS IA.JS***********************/
     created: function() {
-        this.$http.get('/setBoats/getBoats').then(function(response) {
+        this.$http.get(window.location.pathname + '/getBoats').then(function(response) {
             console.log(response);
             this.battleship = response.body.battleship;
         }), function(response) {
@@ -58,12 +58,9 @@ var boats = new Vue({//vue contenant la grille de jeu
         },
 		
 		repositionBoat: function (event) {
-			console.log("resize");
-			console.log(this.battleship.boats);
 			for(boat in this.battleship.boats) {
 				if (boats.battleship.boats[boat].isSet) {
 					let boatObject = $('#' + boat);
-					console.log(boatObject);
 					let coordinates = this.battleship.boats[boat].coordinates;
 					pos_top = $("#myGrid > .divTableBody > .divTableRow[value='" + (coordinates[0]+1) + "']").offset().top;
 					pos_left = $("#myGrid > .divTableBody > .divTableRow[value='" + (coordinates[0]+1) + "'] > .divTableCell[value='" + (coordinates[1]+1) + "']").offset().left;
@@ -295,7 +292,7 @@ var boats = new Vue({//vue contenant la grille de jeu
 
             else {
 
-                this.$http.post('/setBoats/sendBoats', {boats: this.battleship.boats}).then(function(response) {
+                this.$http.post(window.location.pathname + '/sendBoats', {boats: this.battleship.boats}).then(function(response) {
                     window.location.href = response.data.redirect;
                 }), function(response) {
                 };
@@ -303,7 +300,7 @@ var boats = new Vue({//vue contenant la grille de jeu
         },
 
         randomSetAndSubmitBoats: function(event) {
-            this.$http.post('/setBoats/sendBoats', {randomSet: true}).then(function(response) {
+            this.$http.post(window.location.pathname + '/sendBoats', {randomSet: true}).then(function(response) {
                 window.location.href = response.data.redirect;
             }), function(response) {
             };

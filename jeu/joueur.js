@@ -3,9 +3,7 @@ var battleship = require('./grille.js');
 function player(username) {
 
 	this.username = username;
-	this.battleship = new battleship();
-	this.game = null;
-	this.isTurn = false;
+	this.runningGames = {}; //objets {battleship, game, isTurn}
 
 
 	this.socketId = null;//à revoir une fois les sockets étudiés
@@ -17,10 +15,23 @@ function player(username) {
 	};
 
 	
-	//connecte ce joueur à une salle
+	//connecte ce joueur à une salle en tant que joueur 2
 	this.joinGame = function(game) {
-		this.game = game;
-		this.game.player_two = this.username;
+		this.runningGames[game.name] = {
+			"battleship": new battleship(),
+			"game":  game,
+			"isTurn": false
+		};
+		this.runningGames[game.name]["game"].player_two = this.username;
+	};
+	
+	//connecte ce joueur à une salle en tant que joueur 1
+	this.createGame = function(game) {
+		this.runningGames[game.name] = {
+			"battleship": new battleship(),
+			"game":  game,
+			"isTurn": false
+		}
 	};
 };
 

@@ -40,37 +40,55 @@ var game = new Vue({
 
 		// MAJ des grilles quand une attaque a été effectuée
 		socket.on('attack', function(response) {
-			this.battleship  = response.battleship;
-			this.serverMessage = response.message;
+			let room = window.location.pathname.split[2];
+			if(reponse.gameName == room){
+				this.battleship  = response.battleship;
+				this.serverMessage = response.message;
+			}
 		}.bind(this));
 
 		// envoyer un message disant d'attendre
 		socket.on('wait', function(response) {
-			this.serverMessage = response.message;
+			let room = window.location.pathname.split[2];
+			if(reponse.gameName == room){
+				this.serverMessage = response.message;
+			}
 		}.bind(this));
 
 		// à la fin de la partie envoyer un message disant 'gg wp' ou bien 'you lose' 
 		socket.on('finish', function(response) {
-			this.serverMessage = response.message;
-			$('#myModal').modal('show');
+			let room = window.location.pathname.split[2];
+			if(reponse.gameName == room){
+				this.serverMessage = response.message;
+				$('#myModal').modal('show');
+			}
 		}.bind(this));
 
 		//déconnexion
 		socket.on('logout', function(response) {
 			window.location.href = '/logout';
 		});
-		appendMessage('You joined')
-		socket.emit('new-user', "Welcome")
+		appendMessage('You joined');
+		socket.emit('new-user', window.location.pathname.split[2]);
 
-		socket.on('chat-message', data => {
-			appendMessage(`${data.name}: ${data.message}`)
+		socket.on('user-connected', function(message) {
+			let room = window.location.pathname.split[2];
+			if(room === message.gameName) {
+				appendMessage(`{message.name}: ${message.message}`);
+			}
+		})
+		socket.on('chat-message', function(message) {
+			let room = window.location.pathname.split[2];
+			if(room === message.gameName) {
+				appendMessage(`${message.name}: ${message.message}`);
+			}
 		})
 
 		messageForm.addEventListener('submit', e => {
  		 	e.preventDefault()
   			const message = messageInput.value
   			appendMessage(`You: ${message}`)
-  			socket.emit('send-chat-message', message)
+  			socket.emit('send-chat-message', message, window.location.pathname.split[2])
   			messageInput.value = ''
 		});
 
@@ -82,7 +100,7 @@ var game = new Vue({
 
 	
 		//récupérer les informations de la grille (bateaux)
-	    this.$http.get('/game/getBattleship').then(function(response) {
+	    this.$http.get(window.location.pathname + '/getBattleship').then(function(response) {
 	        this.battleship = response.body.battleship;
 	    });
 	},
@@ -92,7 +110,8 @@ var game = new Vue({
 		
 		//attaquer
 		attack: function(row, col, event) {
-			socket.emit('attack', attackCoordinates = {row: row - 1, col: col - 1});
+			socket.emit('attack', attackCoordinates = {row: row - 1, col: col - 1},
+				window.location.pathname.split[2]);
 		},
 
 		attackCellClass: function(row, col) {

@@ -12,8 +12,8 @@ function gameServer() {
 	this.createMultiplayerGame = function(gameName, player_one) {
 
 		this.games[gameName] = new game(gameName, player_one);
-
-		player_one.game = this.games[gameName];
+		
+		player_one.createGame(this.games[gameName]);
 
 		this.updateAvailableGames();
 	};
@@ -21,8 +21,9 @@ function gameServer() {
 	//Joueur2 rejoint une partie multi
 	this.joinMultiplayerGame = function(gameName, player_two) {
 
-		player_two.game = this.games[gameName];
-
+		player_two.joinGame(this.games[gameName]);
+		
+		/////
 		this.games[gameName].player_two = player_two; 
 
 		this.updateAvailableGames();
@@ -30,7 +31,7 @@ function gameServer() {
 
 	//explicite
 	this.createSoloGame = function(player) {
-
+		
 		var Game = new game(player.username, player);
 
 		this.games[player.username] = Game;
@@ -39,7 +40,7 @@ function gameServer() {
 
 		Game.player_two = new AI(Game); //contre l'ordinateur
 
-		this.players[player.username].game = Game;
+		this.players[player.username].createGame(Game);
 	};
 
 
@@ -91,31 +92,29 @@ function gameServer() {
 		return false;
 	};
 
-
-
 	//envoie la route adéquate selon l'utilisateur
-	this.sendRoute = function(username) {
+	this.sendRoute = function(username, nameGame) {
 		
-		if (username) { //vérifie si le joueur a un pseudo
+		if (username && this.games[nameGame]) { //vérifie si le joueur a un pseudo, et si une partie de ce nom existe
 			
-			if (this.players[username].game) {//vérifie si le joueur est déjà associé à une partie
+			if (this.players[username].runningGames[nameGame]) {//vérifie si le joueur est déjà associé à cette partie
 
 				//si le joueur est connecté a une autre partie ou bien joue en solo
-				if (!this.players[username].game.isAvailable() || this.players[username].game.gameType == 'solo') {
+				if (!this.players[username].runningGames[nameGame]["game"].isAvailable() || this.players[username].runningGames[nameGame]["game"].gameType == 'solo') {
 					
-					if (this.players[username].battleship.areBoatsSet) {//vérifie si les bateau sont positionnés
+					if (this.players[username].runningGames[nameGame]["battleship"].areBoatsSet) {//vérifie si les bateau sont positionnés
 
-						return '/game';
+						return '/game/' + nameGame;
 
 					}else {
 
-						return '/setBoats';
+						return '/setBoats/' + nameGame;
 
 					}
 				}
 				else {//si le joueur a créé une partie en multi et que perosnne n'a rejoint
 
-					return '/initialization'; 
+					return '/initialization/' + nameGame; 
 
 				}
 			}

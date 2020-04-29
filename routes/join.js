@@ -32,8 +32,6 @@ router.get('/', function(req, res) {
 
 
 router.post('/login', function(req, res) {
-	
-
 	var username = req.body.username;
 
 	//si le joueur existe déjà
@@ -63,7 +61,7 @@ router.post('/game', function(req, res, callback) {
 
 	if (game.isAvailable()) {
 		gameServer.joinMultiplayerGame(gameName, player);
-		res.send({redirect: '/initialization'});
+		res.send({redirect: '/initialization/' + gameName});
 	} else {
 		isGameFull = true;
 		res.send({redirect: '/join'});

@@ -8,7 +8,7 @@ var router = express.Router();
 
 
 router.get('/', function(req, res) {
-	var correctRoute = gameServer.sendRoute(req.session.username);
+	var correctRoute = gameServer.sendRoute(req.session.username, null);
 	if (correctRoute == '/') {
 	 	res.render('createGame');
 	 }
@@ -36,16 +36,13 @@ router.post('/', function(req, res) {
 
 		req.session.save();
 
-
 		gameServer.newPlayer(username);
-
 		gameServer.createMultiplayerGame(gameName, gameServer.players[username]);
-
-
+		io().emit('beginMultiGame', gameName);
 
 		io.emit('listGames', gameServer.availableGames);
 
-		res.send({redirect: '/initialization'}); //redirection
+		res.send({redirect: '/initialization/' + gameName}); //redirection
 	}
 });
 

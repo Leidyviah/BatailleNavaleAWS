@@ -42,6 +42,7 @@ var listGames = new Vue({
 				// sinon rejoindre la partie
 				this.$http.post('/join/game', {picked: this.picked})
 					.then(function(response) {
+						console.log("choose ", response.data.redirect);
 						window.location.href = response.data.redirect;
 					});
 				}

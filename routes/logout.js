@@ -15,19 +15,21 @@ router.get('/', function(req, res) {
 
 	if (username) {
 
-		if (gameServer.players[username].game) {
+		if (gameServer.players[username].runningGames) {
 
-			io.sockets.to(gameServer.players[username].game.name).emit('logout', {});
+			for(game of gameServer.players[username].runningGames) {
+				io.sockets.to(game.name).emit('logout', {});
+				gameServer.removeGame(game);
+				gameServer.updateAvailableGames();
+			}
+			
 
-			gameServer.removeGame(gameServer.players[username].game.name);
-			gameServer.updateAvailableGames();
 
 		}
 		gameServer.removePlayer(username);
 	}
 
 	req.session.destroy();
-
 	res.redirect('/');
 });
 

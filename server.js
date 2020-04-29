@@ -64,8 +64,6 @@ io.use(sharedsession(session, {
 }));
 
 
-
-
 var ClientServer = require('./jeu/clientServer.js');
 var clientServer = new ClientServer(gameServer, io);
 clientServer.init();

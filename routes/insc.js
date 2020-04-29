@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
 
    if(req.session.loggedin){
         
-    var correctRoute = gameServer.sendRoute(req.session.username);
+    var correctRoute = gameServer.sendRoute(req.session.username, null);
 	res.redirect(correctRoute);
 
 	}
@@ -21,9 +21,6 @@ router.get('/', function(req, res) {
    	    res.render('insc');
 		
     };
-	
-	
-	 
 });
 
 

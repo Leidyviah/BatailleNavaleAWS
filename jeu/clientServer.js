@@ -5,8 +5,9 @@ var clientServer = function(gameServer, io) {
 
 	self.io = io;
 
-
 	self.gameServer = gameServer;
+	
+	
 
 	// Initialisation de socket io
 
@@ -16,32 +17,44 @@ var clientServer = function(gameServer, io) {
 
 			// si le joueur est enregistré
 			if (self.getUsername(socket)) {
-
+				self.gameServer.players[self.getUsername(socket)].saveSocketId(socket.id);
+				/*
 				// vérifie si il a déja rejoint une partie
 				if (self.getUserGame(socket)) {
 
 					// partie solo
 					if (self.getUserGame(socket).gameType == 'solo') {
-						self.handleSoloConnection(socket);					
+						*/
+					socket.on('beginSoloGame', function(gameName){
+						self.handleSoloConnection(socket, gameName);
+					});
+				/*						
 					} else {// partie multi
-						self.handleMultiplayerInitialization(socket);
-						self.handleMultiplayerGameConnection(socket);
-					}
+					*/
+					socket.on('beginMultiGame', function(gameName) {
+						self.handleMultiplayerInitialization(socket, gameName);
+						self.handleMultiplayerGameConnection(socket, gameName);
+					});
+					/*}
 
 					
 				} else {//sinon on lui propose les room existantes
 					self.sendAvailableGames(socket);
 				}
+				*/
 				
+				socket.on('new-user', function(gameName) {
+					socket.broadcast.to(self.getEnemyPlayer(socket, gameName).socketId).emit('user-connected',{
+						gameName: gameName,
+						username: self.getUsername(socket)
+					});
+				});
+				socket.on('send-chat-message', function(message, gameName) {
+					socket.broadcast.to(self.getEnemyPlayer(socket, gameName).socketId).emit('chat-message', { gameName: gameName, message: message, name: self.getUsername(socket) })
+				});
 			} else {
 				self.handleDisconnect(socket);
 			}
-			socket.on('new-user', function() {
-				socket.broadcast.emit('user-connected',self.getUsername(socket))
-				})
-				socket.on('send-chat-message', message => {
-					socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('chat-message', { message: message, name: self.getUsername(socket) })
-				})
 		});
 	};
 
@@ -50,83 +63,95 @@ var clientServer = function(gameServer, io) {
 
 	
 	//socket pour la page d'initialisation
-	self.handleMultiplayerInitialization = function(socket) {
+	self.handleMultiplayerInitialization = function(socket, gameName) {
 		var username = self.getUsername(socket);
-		var game = self.getUserGame(socket);
+		var game = self.getUserGame(gameName);
 		var player_one = game.player_one;
 		var player_two = game.player_two;
 
-		self.joinGameRoom(socket);
+		self.joinGameRoom(gameName);
 
-		self.gameServer.players[username].saveSocketId(socket.id);
 		//si ce joueur a créé la partie en envoie des wait statuts car il doit attendre qu'un autre joueur rejoigne la room
 		if (username == player_one.username) {
-			self.sendWaitStatus(socket);
+			self.sendWaitStatus(socket, gameName);
 		}
 
 		//si ce joueur rejoint une room on envoie un connect statut à celui qui l'a créé
 		else {
-			self.sendConnectStatus(socket);
+			self.sendConnectStatus(socket, gameName);
 		}
 
-		
-		socket.on('startGame', function() {//quand il appuie sur start on redirige les deux dans la page pour placer les bateaux
-			self.sendSetBoatStatus(socket);
+		socket.on('startGame', function(game) {//quand il appuie sur start on redirige les deux dans la page pour placer les bateaux
+			if(name === gameName) {
+				self.sendSetBoatStatus(socket, gameName);
+			}
 		});
 	}
 
 	// Socket io handler pour la page principale
-	self.handleMultiplayerGameConnection = function(socket) {
+	self.handleMultiplayerGameConnection = function(socket, gameName) {
 
 		var username = self.getUsername(socket);
 
-		var game = self.getUserGame(socket);
+		var game = self.getUserGame(gameName);
 
 		
 		if (!game.isAvailable()) {
 			
-			var enemyPlayer = self.getEnemyPlayer(socket);
+			var enemyPlayer = self.getEnemyPlayer(socket, gameName);
 
-			if (!enemyPlayer.battleship.areBoatsSet) {//le premier joueur à avoir fini de poser ses bateaux commence à jouer
-				self.sendWaitForBoatStatus(socket);
-				self.gameServer.players[self.getUsername(socket)].isTurn = true;
+			if (!enemyPlayer.runningGames[game.name]["battleship"].areBoatsSet) {//le premier joueur à avoir fini de poser ses bateaux commence à jouer
+				self.sendWaitForBoatStatus(socket, gameName);
+				
+				self.gameServer.players[self.getUsername(socket)].runningGames[game.name]["isTurn"] = true;
 			}
 
 			
 			else {
-				self.sendStartGameStatus(socket);
+				self.sendStartGameStatus(socket, gameName);
 			}
 
 			
-			socket.on('attack', function(attackCoordinates) {
-				if (enemyPlayer.battleship.areBoatsSet && gameServer.players[username].isTurn) {
-					
-					var coordinates = [attackCoordinates.row, attackCoordinates.col];
+			socket.on('attack', function(attackCoordinates, gameName) {
+				if(game.name == gameName) {
+					if (enemyPlayer.runningGames[game.name]["battleship"].areBoatsSet && 
+							gameServer.players[username].runningGames[game.name]["isTurn"]) {
+						
+						var coordinates = [attackCoordinates.row, attackCoordinates.col];
 
-					self.getUserBattleship(socket).attackEnemy(coordinates, enemyPlayer);
+						self.getUserBattleship(socket, game.name).attackEnemy(coordinates, enemyPlayer, game.name);
 
-					if (enemyPlayer.battleship.isFleetDestroyed()) {
-						self.sendGameOverStatus(socket);
-						self.disconnectAllPlayersInGame(socket);
-					}
-					else {
-						// tour de l'autre joueur
-						self.gameServer.players[username].isTurn = false;
-						enemyPlayer.isTurn = true;
+						if (enemyPlayer.runningGames[game.name]["battleship"].isFleetDestroyed()) {
+							self.sendGameOverStatus(socket, game.name);
+							self.deleteGame(game.name);
+							//self.disconnectAllPlayersInGame(socket);
+						}
+						else {
+							// tour de l'autre joueur
+							
+							self.gameServer.players[username].runningGames[game.name]["isTurn"] = false;
+							enemyPlayer.runningGames[game.name]["isTurn"] = true;
 
-						//envoyer aux deux joueurs qui sera le prochain tour à jouer
-						self.sendNextTurnStatus(socket);
+							//envoyer aux deux joueurs qui sera le prochain tour à jouer
+							self.sendNextTurnStatus(socket, game.name);
+						}
 					}
 				}
 			});
 		}
 	}
-
+	
+	self.deleteGame = function(gameName) {
+		let game = self.gameServer.games[gameName];
+		delete game.player_one.runningGames[gameName];
+		delete game.player_two.runningGames[gameName];
+		delete self.gameServer.games[gameName];
+	}
 
 
 	//retourner la partie où joue le client
-	self.getUserGame = function(socket) {
-		return self.gameServer.players[self.getUsername(socket)].game;
+	self.getUserGame = function(gameName) {
+		return self.gameServer.games[gameName];
 	}
 
 
@@ -135,15 +160,16 @@ var clientServer = function(gameServer, io) {
 	}
 
 	//retourner la grille du joueur actuelle
-	self.getUserBattleship = function(socket) {
-		return self.gameServer.players[self.getUsername(socket)].battleship;
+	self.getUserBattleship = function(socket, gameName) {
+		return self.gameServer.players[self.getUsername(socket)].runningGames[gameName]["battleship"];
 	}
 
 
 	
 	//envoyer un wait statue au joueur qui a créé la room si aucun joueur ne rejoint
-	self.sendWaitStatus = function(socket) {
+	self.sendWaitStatus = function(socket, gameName) {
 		var status = {
+			gameName: gameName,
 			status: 'waiting',
 			message: 'Wait for a player to join...',
 		}
@@ -152,14 +178,15 @@ var clientServer = function(gameServer, io) {
 
 	
 	//quand un joueur se connect à une room envoyer connect statu aux deux joueurs
-	self.sendConnectStatus = function(socket) {
+	self.sendConnectStatus = function(socket, gameName) {
 
-		var game = self.getUserGame(socket);
+		var game = self.getUserGame(gameName);
 
 		var player_one = game.player_one;
 		var player_two = game.player_two;
 
 		var status = {
+			gameName: gameName,
 			status: 'connected',
 			message: "player " + player_two.username + " is connected now!",
 		}
@@ -174,31 +201,28 @@ var clientServer = function(gameServer, io) {
 		socket.emit('listGames', self.gameServer.availableGames);
 	}
 
-	self.joinGameRoom = function(socket) {
-		var game = self.getUserGame(socket);
-		socket.join(game.name);
+	self.joinGameRoom = function(gameName) {
+		socket.join(gameName);
 	}
 
 
 	
 
 
-	self.sendSetBoatStatus = function(socket) {
-		var game = self.getUserGame(socket);
+	self.sendSetBoatStatus = function(socket, gameName) {
+		var game = self.getUserGame(gameName);
 		var response = {
-			redirect: '/setBoats'
+			gameName: gameName,
+			redirect: '/setBoats/' + gameName
 		};
-
-
-
-
+		
 		self.io.sockets.in(game.name).emit('setBoats', response)
 	}
 
 
 	//l'adversaire de chaque joueur
-	self.getEnemyPlayer = function(socket) {
-		var game = self.getUserGame(socket);
+	self.getEnemyPlayer = function(socket, gameName) {
+		var game = self.getUserGame(gameName);
 		var username = self.getUsername(socket);
 
 		if (game.player_one.username == username) {
@@ -209,10 +233,11 @@ var clientServer = function(gameServer, io) {
 	}
 
 	//attente que l'adversaire pose ses bateaux
-	self.sendWaitForBoatStatus = function(socket) {
+	self.sendWaitForBoatStatus = function(socket, gameName) {
 		var username = self.getUsername(socket);
-		var enemyPlayer = self.getEnemyPlayer(socket);
+		var enemyPlayer = self.getEnemyPlayer(socket, gameName);
 		var response = {
+			gameName: gameName,
 			status : 'waiting',
 			message: 'Waiting for ' + enemyPlayer.username + " to set boats",
 		}
@@ -220,10 +245,11 @@ var clientServer = function(gameServer, io) {
 	}
 
 	
-	self.sendStartGameStatus = function(socket) {
+	self.sendStartGameStatus = function(socket, gameName) {
 		var response = {
-				message: 'Your turn.',
-			}
+			gameName: gameName,
+			message: 'Your turn.',
+		}
 
 		socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('wait', response);
 		response.message = "It is " + self.getEnemyPlayer(socket).username + "'s turn.";
@@ -232,14 +258,16 @@ var clientServer = function(gameServer, io) {
 
 	
 	//prévenir le joueur que c'est son tour
-	self.sendNextTurnStatus = function(socket) {
+	self.sendNextTurnStatus = function(socket, gameName) {
 		response = {
+			gameName: gameName,
 			message: 'It is your turn',
 			battleship: self.getEnemyPlayer(socket).battleship
 		};
 		socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('attack', response);
 
 		response = {
+			gameName: gameName,
 			message: "It is " + self.getEnemyPlayer(socket).username + "'s turn",
 			battleship: self.getUserBattleship(socket)
 		};
@@ -247,13 +275,15 @@ var clientServer = function(gameServer, io) {
 		socket.emit('attack', response);
 	}
 	
-	self.sendGameOverStatus = function(socket) {
+	self.sendGameOverStatus = function(socket, gameName) {
 		var response = {
+			gameName: gameName,
 			message: 'You lost. :(',
 			battleship: self.getEnemyPlayer(socket).battleship
 		};
 		socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('finish', response);
 		response = {
+			gameName: gameName,
 			message: 'You won! ^^',
 			battleship: self.getUserBattleship(socket)
 		};
@@ -265,9 +295,9 @@ var clientServer = function(gameServer, io) {
 	
 
 	//contre l'ia
-	self.handleSoloConnection = function(socket) {
+	self.handleSoloConnection = function(socket, nameGame) {
 		var player = self.gameServer.players[self.getUsername(socket)];
-		var game = self.getUserGame(socket);
+		var game = self.getUserGame(nameGame);
 
 		player.isTurn = true;
 
@@ -275,46 +305,54 @@ var clientServer = function(gameServer, io) {
 
 		enemyPlayer.battleship.randomSetBoats();
 
-		socket.on('attack', function(attackCoordinates) {
-			if (player.isTurn) {
-				var coordinates = [attackCoordinates.row, attackCoordinates.col];
+		socket.on('attack', function(attackCoordinates, nameGameS) {
+			if(nameGame === nameGameS){
+				if (player.runningGames[gameName]["isTurn"]) {
+					var coordinates = [attackCoordinates.row, attackCoordinates.col];
 
-				let att = self.getUserBattleship(socket).attackEnemy(coordinates, enemyPlayer);
-				self.sendAIResponse(socket);
+					let att = self.getUserBattleship(socket, nameGame).attackEnemyAI(coordinates, enemyPlayer);
+					self.sendAIResponse(socket, nameGame);
 
-				if (enemyPlayer.battleship.isFleetDestroyed()) {
-					self.sendGameOverStatus(socket);
-					setTimeout(function() {
-						self.handleDisconnect(socket);
-					}, 300000);
-				}
-				else {
-					player.isTurn = false;
-					var AIAttack_coordinates = enemyPlayer.guessCoordinates();
-					enemyPlayer.attackEnemy(AIAttack_coordinates, player);
-
-					if (self.getUserBattleship(socket).isFleetDestroyed()) {
-						self.sendGameOverStatus(socket);
-
-						setTimeout(function() {
+					if (enemyPlayer.battleship.isFleetDestroyed()) {
+						self.sendGameOverStatus(socket, nameGame);
+						/*setTimeout(function() {
 							self.handleDisconnect(socket);
-						}, 300000);
+						}, 300000);*/
+						let game = self.gameServer.games[gameName];
+						delete game.player_one.runningGames[gameName];
+						delete self.gameServer.games[gameName];
 					}
+					else {
+						player.runningGames[gameName]["isTurn"] = false;
+						var AIAttack_coordinates = enemyPlayer.guessCoordinates();
+						enemyPlayer.attackEnemy(AIAttack_coordinates, player, gameName);
 
-					setTimeout(function () {
-						player.isTurn = true;
-						self.sendSoloResponse(socket);
-					}, 500);
+						if (self.getUserBattleship(socket, nameGame).isFleetDestroyed()) {
+							self.sendGameOverStatus(socket, nameGame);
+
+							/*setTimeout(function() {
+								self.handleDisconnect(socket);
+							}, 300000);*/
+							let game = self.gameServer.games[gameName];
+							delete game.player_one.runningGames[gameName];
+							delete self.gameServer.games[gameName];
+						}
+
+						setTimeout(function () {
+							player.runningGames[gameName]["isTurn"] = true;
+							self.sendSoloResponse(socket, nameGame);
+						}, 500);
+					}
 				}
-
 			}
 		})
 	};
 
 
 	//contre l'ia
-	self.sendAIResponse = function(socket) {
+	self.sendAIResponse = function(socket, gameName) {
 		response = {
+			gameName: gameName,
 			message: "AI's turn.",
 			battleship: self.getUserBattleship(socket)
 		};
@@ -322,8 +360,9 @@ var clientServer = function(gameServer, io) {
 	}
 
 	
-	self.sendSoloResponse = function(socket) {
+	self.sendSoloResponse = function(socket, gameName) {
 		response = {
+			gameName: gameName,
 			message: "Your turn.",
 			battleship: self.getUserBattleship(socket)
 		};
@@ -341,13 +380,14 @@ var clientServer = function(gameServer, io) {
 	}
 
 	//déconnecter tout le monde 
-	self.disconnectAllPlayersInGame = function(socket) {
+	/*self.disconnectAllPlayersInGame = function(socket) {
 		setTimeout(function() {
-
-			self.handleDisconnect(self.io.sockets.connected[self.getEnemyPlayer(socket).socketId]);
+			
+self.handleDisconnect(self.io.sockets.connected[self.getEnemyPlayer(socket).socketId
+]);
 			self.handleDisconnect(socket);
 		}, 300000);
-	}
+	}*/
 };
 
 module.exports = clientServer;

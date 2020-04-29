@@ -99,15 +99,15 @@ function AI(game) {
 
 
 	//nom explicite
-	this.findSmallestEnemyBoatSize = function(enemyPlayer) {
+	this.findSmallestEnemyBoatSize = function(enemyPlayer, gameName) {
 
 		var minLength = 5;
 
-		for (boat in enemyPlayer.battleship.boats) {
+		for (boat in enemyPlayer.runningGames[gameName]["battleship"].boats) {
 
 			//si la taille du bateau est inférieur à minLength et sile bateu n'est pas coulé
-			if (enemyPlayer.battleship.boats[boat].size < minLength && !enemyPlayer.battleship.boats[boat].isSunk) {
-				minLength = enemyPlayer.battleship.boats[boat].size;
+			if (enemyPlayer.runningGames[gameName]["battleship"].boats[boat].size < minLength && !enemyPlayer.runningGames[gameName]["battleship"].boats[boat].isSunk) {
+				minLength = enemyPlayer.runningGames[gameName]["battleship"].boats[boat].size;
 			}
 		}
 
@@ -116,7 +116,7 @@ function AI(game) {
 
 
 	//les coordonées testées doivent être retirées de possibleCoordinatesArray pour qu'elle ne soit pas testée à nouveau
-	this.evaluateArray = function(coordinatesList, enemyPlayer) {
+	this.evaluateArray = function(coordinatesList, enemyPlayer, gameName) {
 
 		for (coordinates of coordinatesList) {
 			var index = this.findIndexOf(coordinates);
@@ -130,7 +130,7 @@ function AI(game) {
 
 		// il faut mettre à jour toute les possibilitées
 
-		var minLength = this.findSmallestEnemyBoatSize(enemyPlayer);
+		var minLength = this.findSmallestEnemyBoatSize(enemyPlayer, gameName);
 
 		for (var i=0; i<this.possibleCoordinatesArray.length; i++) {
 
@@ -229,20 +229,20 @@ function AI(game) {
 	};
 
 	//attaquer la grille ennemie après avoir recalculer les listes hitCoordinates possibleCoordinatesArray et possibleCoordinatesSubArray
-	this.attackEnemy = function(attack_coordinates, enemyPlayer) {
+	this.attackEnemy = function(attack_coordinates, enemyPlayer, gameName) {
 		var x = attack_coordinates[0];
 		var y = attack_coordinates[1];
 
 		
 
 		// tout d'abord vérifier si l'ia a touché une case en dernier (sans bateau coulé)
-		if (enemyPlayer.battleship.checkPosition(x,y)) {
+		if (enemyPlayer.runningGames[gameName]["battleship"].checkPosition(x,y)) {
 			this.hitCoordinates.push([x,y]);
 
 			// attaquer
 			this.battleship.attackEnemy(attack_coordinates, enemyPlayer);
 
-			var hitBoat = enemyPlayer.battleship.findHitBoat(x,y);
+			var hitBoat = enemyPlayer.runningGames[gameName]["battleship"].findHitBoat(x,y);
 			if(hitBoat.isSunk) {
 				var first = hitBoat.coordinatesList[0];
 				var last = hitBoat.coordinatesList[hitBoat.coordinatesList.length-1];
@@ -279,7 +279,7 @@ function AI(game) {
 						}
 					}
 				}
-				this.evaluateArray(this.hitCoordinates, enemyPlayer);
+				this.evaluateArray(this.hitCoordinates, enemyPlayer, gameName);
 
 				// Reinitialiser hitcoordinates
 				this.hitCoordinates = [];
@@ -289,8 +289,8 @@ function AI(game) {
 		// sinon évaluer la nouvelle liste
 		else {
 			// attaquer
-			this.battleship.attackEnemy(attack_coordinates, enemyPlayer);
-			this.evaluateArray([[x,y]], enemyPlayer);
+			this.battleship.attackEnemy(attack_coordinates, enemyPlayer, gameName);
+			this.evaluateArray([[x,y]], enemyPlayer, gameName);
 		}
 
 		this.evaluateSubArray();

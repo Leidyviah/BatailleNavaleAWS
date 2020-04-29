@@ -9,7 +9,7 @@ var gameStatus = new Vue({
     // l'is du DIV
     el: '#gameStatus',
 
-    // donénes pour la page
+    // données pour la page
     data: {
         status: '',
         message: '',
@@ -19,15 +19,20 @@ var gameStatus = new Vue({
     // cette fonction est appelé à la création de l'instance'
     created: function() {
         socket.on('status', function(status) {
+			
+			console.log(window);
+			let room = window.location.pathname.split('/')[2];
+			
+			if(status.nameGame === room) {
+				this.message = status.message;
+				this.status = status.status;
+				//this.game = status.gameRoom;
 
-            this.message = status.message;
-            this.status = status.status;
-            this.game = status.gameRoom;
-
-            //si le joueur rejoint une room
-            if (status.status == 'connected') {
-                $('button').removeClass('hidden');
-            }
+				//si le joueur rejoint une room
+				if (status.status == 'connected') {
+					$('button').removeClass('hidden');
+				}
+			}
         }.bind(this));
 
         socket.on('logout', function(response) {
@@ -38,12 +43,16 @@ var gameStatus = new Vue({
     
     methods: {
         startGame: function(event) {
-            socket.emit('startGame');
+			let room = window.location.pathname.split('/')[2];
+            socket.emit('startGame', room);
         }
     },
 });
 
 //quand le joueur click sur start(quand il rejoint une room), tout les joueurs sont dirigés vers la page où il placeront leurs bateaux
 socket.on('setBoats', function(response) {
-    window.location.href = response.redirect;
+	let room = window.location.pathname.split('/')[2];
+	if(room === response.gameName) {
+		window.location.href = response.redirect;
+	}
 });

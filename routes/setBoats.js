@@ -6,10 +6,10 @@ var router = express.Router();
 
 
 
-router.get('/', function(req, res) {
-	var correctRoute = gameServer.sendRoute(req.session.username);
-	if (correctRoute == '/setBoats') {
-	 	res.render('setBoats');
+router.get('/:id', function(req, res) {
+	var correctRoute = gameServer.sendRoute(req.session.username, req.params.id);
+	if (correctRoute == '/setBoats/' + req.params.id) {
+	 	res.render('setBoats', {id: req.params.id});
 	 }
 	 else {
 	 	res.redirect(correctRoute);
@@ -17,16 +17,15 @@ router.get('/', function(req, res) {
 });
 
 
-router.get('/getBoats', function(req, res) {
-
+router.get('/:id/getBoats', function(req, res) {
 
 	if (req.session.username) {
 		var username = req.session.username;
 
-		if (gameServer.players[username].game) {
-			if (!gameServer.players[username].game.isAvailable()) {
+		if (gameServer.games[req.params.id]) {
+			if (!gameServer.games[req.params.id].isAvailable()) {
 
-				var battleship = gameServer.players[username].battleship;
+				var battleship = gameServer.players[username].runningGames[req.params.id]["battleship"];
 				res.send({battleship: battleship});
 
 			}
@@ -39,10 +38,10 @@ router.get('/getBoats', function(req, res) {
 });
 
 
-router.post('/sendBoats', function(req, res) {
+router.post('/:id/sendBoats', function(req, res) {
 
 	var username = req.session.username;
-	var battleship = gameServer.players[username].battleship;
+	var battleship = gameServer.players[username].runningGames[req.params.id]["battleship"];
 
 	var errors = [];
 
@@ -81,12 +80,10 @@ router.post('/sendBoats', function(req, res) {
 	if (errors.length != 0) {//il y a des erreurs
 		res.status(400).send({errors: errors});
 	}
-
-	
 	else {//commencer la partie
 		battleship.areBoatsSet = true;
 		res.send({
-			redirect:'/game',
+			redirect:'/game/' + req.params.id,
 		});
 	}
 });

@@ -62,7 +62,6 @@ function battleship() {
 	};
 
 	this.areBoatsSet = false;
-	this.isTurn = false;
 
 	this.enemySunkBoat = {};
 
@@ -87,7 +86,36 @@ function battleship() {
 
 	
 	//Attaque la grille enemie et changer sa valeur, 0 y'a rien, 1 y'a un bateau, 2 tir manqué, 3 tir touché, 4 bateau coulé
-	this.attackEnemy = function(coordinates, enemyPlayer) {
+	this.attackEnemy = function(coordinates, enemyPlayer, gameName) {
+
+		var x = coordinates[0];
+		var y = coordinates[1];
+
+		if (this.areAttackCoordinatesTested(x,y)) {
+			console.log('Vous avez déjà tiré ici.');
+			return false;
+		}
+
+		if (enemyPlayer.runningGames[gameName]["battleship"].checkPosition(x,y)) {
+
+			enemyPlayer.runningGames[gameName]["battleship"].grid[x][y] = 3;
+			this.attack_grid[x][y] = 3;
+
+	
+			var hitBoat = enemyPlayer.runningGames[gameName]["battleship"].findHitBoat(x, y);
+
+			// Sink the boat if it was completely destroyed
+			enemyPlayer.runningGames[gameName]["battleship"].sinkBoatIfDestroyed(hitBoat.name);
+			this.sinkEnemyBoatIfDestroyed(hitBoat.name, enemyPlayer, gameName);
+		}
+		else {
+			enemyPlayer.runningGames[gameName]["battleship"].grid[x][y] = 2;
+			this.attack_grid[x][y] = 2;
+		}
+	};
+	
+	//Attaque la grille enemie d'une IA et changer sa valeur, 0 y'a rien, 1 y'a un bateau, 2 tir manqué, 3 tir touché, 4 bateau coulé
+	this.attackEnemyAI = function(coordinates, enemyPlayer) {
 
 		var x = coordinates[0];
 		var y = coordinates[1];
@@ -107,7 +135,7 @@ function battleship() {
 
 			// Sink the boat if it was completely destroyed
 			enemyPlayer.battleship.sinkBoatIfDestroyed(hitBoat.name);
-			this.sinkEnemyBoatIfDestroyed(hitBoat.name, enemyPlayer);
+			this.sinkEnemyAIBoatIfDestroyed(hitBoat.name, enemyPlayer);
 		}
 		else {
 			enemyPlayer.battleship.grid[x][y] = 2;
@@ -227,7 +255,20 @@ function battleship() {
 
 
 	//couler le bateau enemie
-	this.sinkEnemyBoatIfDestroyed = function(boat_name, enemyPlayer) {
+	this.sinkEnemyBoatIfDestroyed = function(boat_name, enemyPlayer, gameName) {
+		if (enemyPlayer.runningGames[gameName]["battleship"].boats[boat_name].isSunk) {
+			this.enemySunkBoat[boat_name] = enemyPlayer.runningGames[gameName]["battleship"].boats[boat_name];
+			for (coordinates of enemyPlayer.runningGames[gameName]["battleship"].boats[boat_name].coordinatesList) {
+				var x = coordinates[0];
+				var y = coordinates[1];
+
+				this.attack_grid[x][y] = 4;
+			}
+		}
+	}
+	
+	//couler le bateau enemie, pour une IA
+	this.sinkEnemyAIBoatIfDestroyed = function(boat_name, enemyPlayer) {
 		if (enemyPlayer.battleship.boats[boat_name].isSunk) {
 			this.enemySunkBoat[boat_name] = enemyPlayer.battleship.boats[boat_name];
 			for (coordinates of enemyPlayer.battleship.boats[boat_name].coordinatesList) {
