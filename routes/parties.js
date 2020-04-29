@@ -16,9 +16,7 @@ router.get('/', function(req, res)  {
   let query = conn.query(sql, [req.session.ID,req.session.ID], (err, results) => {
     console.log('id test parties:',req.session.ID);
     if(err) throw err;
-    res.render('parties',{
-      results: results
-    });
+    res.render('parties',{results: results});
     res.end();
   });
 });

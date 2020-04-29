@@ -57,12 +57,12 @@ router.post('/', function(req, res) {
      res.end();
   });}
   else{
-    res.render('/insc',{message:'username déja exist'});
+    res.render('insc',{message:'username déja exist'});
     res.end();
   }
 });
   }else {
-res.render('/insc',{message:'confirmation de mots passe est incorect '});
+res.render('insc',{message:'confirmation de mots passe est incorect '});
 res.end();
   }
 });
