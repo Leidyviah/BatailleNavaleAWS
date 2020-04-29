@@ -9,7 +9,10 @@ var infosConnexion = new Vue({
   data: {
     message: ''
   },
-  
-  
-                             
+  created: function() {
+    socket.emit("infos-connexion");
+    socket.on("infos-connexion", function(message){
+      this.message = message;
+    }).bind(this);
+  }                        
 });

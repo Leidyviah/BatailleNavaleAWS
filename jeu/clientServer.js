@@ -37,10 +37,18 @@ var clientServer = function(gameServer, io) {
 			}
 			socket.on('new-user', function() {
 				socket.broadcast.emit('user-connected',self.getUsername(socket))
-				})
+				});
 				socket.on('send-chat-message', message => {
 					socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('chat-message', { message: message, name: self.getUsername(socket) })
-				})
+				});
+      socket.on("info-connexion", function() {
+        let infos;
+        if(socket.handshake.session.loggedin) {
+          infos = "Vous êtes connecté sous " + self.getUsername(socket);
+    
+        }
+        socket.
+      })
 		});
 	};
 
