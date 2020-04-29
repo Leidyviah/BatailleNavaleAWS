@@ -14,6 +14,17 @@ body {
 
 #infos_connexion {
   margin-right: 0;
+  margin-left: auto;
+}
+
+button {
+  font-size: 3vmin;
+}
+
+#infos_connexion button {
+  font-size: 3vmin;
+  background-color: indigo;
+  border: none;
 }
 
 .container {
@@ -28,6 +39,7 @@ h1, h2, h3, h4, .divTableHeading {
 
 h1 {
   	font-size: 8vmin;
+    line-height:2em;
 }
 
 h2 {
