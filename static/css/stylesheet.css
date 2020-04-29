@@ -7,8 +7,9 @@
 
 body {
 	background-color: black;
-	background-image: url("https://images7.alphacoders.com/568/568756.jpg");
-	font-family: 'Ubuntu', sans-serif;
+	background-image: url("https://images7.alphacoders.com/568/568756.jpg"); 
+  background-repeat: no-repeat;
+  font-family: 'Ubuntu', sans-serif;
 	color: white;
 }
 
