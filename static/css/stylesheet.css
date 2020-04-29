@@ -177,9 +177,14 @@ h5 {
 	width: 80%;
 }
 
+#send-button{
+  background-color: black;
+}
+
 #message-input {
 	margin-left: 10%;
 	width: 75%;
+  color: black;
 }
 
 .bounceIn {
