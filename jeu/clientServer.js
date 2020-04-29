@@ -44,10 +44,11 @@ var clientServer = function(gameServer, io) {
       socket.on("info-connexion", function() {
         let infos;
         if(socket.handshake.session.loggedin) {
-          infos = "Vous êtes connecté sous " + self.getUsername(socket);
-    
+          infos = "Vous êtes connecté sous " + self.getUsername(socket) + ".";
+        } else {
+          infos = "Vous n'êtes pas connecté.";
         }
-        socket.
+        socket.emit("infos-connexion", infos);
       })
 		});
 	};
