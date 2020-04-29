@@ -12,10 +12,9 @@
 
   <div id="login" class="container text-center">
     <h1><br>BATAILLE NAVALE</h1>
-    <br><br>
-    <% if (locals.message){ %>
-    <div v-for="message in messages" id="message"  class='alert alert-danger'>
-      <span class="glyphicon glyphicon-info-sign"></span> &nbsp;<%= message   %>
+    <%if (locals.message){ %>
+    <div   class='alert alert-danger'>
+      <span class="glyphicon glyphicon-info-sign"></span> <%= message   %>
     </div>
    <% }%>
     <div class="centerVertical alert alert-info">
