@@ -13,7 +13,7 @@
 <h1 class="text-center"><br>SEA BATTLE</h1><br><br><br>
 <div class="container text-center" id='gameStatus'>
   <p><span class="alert alert-success"><span v-if="message.charAt(0) == 'W'" class="rotating glyphicon glyphicon-refresh"></span><span v-else class="glyphicon glyphicon-info-sign"></span> &nbsp;{{message}}</span></p><br><br>
-  <a href="/logout"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> &nbsp;Cancel</button></a>
+  <a href="/quit"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> &nbsp;Cancel</button></a>
   <button v-on:click='startGame' type="button" class="hidden btn btn-primary">Start</button>
 </div>
 
