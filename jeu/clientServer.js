@@ -251,8 +251,8 @@ var clientServer = function(gameServer, io) {
 		var db = require("../jeu/connexion_db.js");
 		var conn=db.getConnexionDb();
 		var game = self.getUserGame(socket);
-		var player_one = game.player_one;
-		var player_two = game.player_two;
+		var player_one = game.player_one.username;
+		var player_two = game.player_two.username;
 		let data = { player_one: player_one, player_two: player_two};
 		  let sql = "INSERT INTO parties SET ?";
 		  let query = conn.query(sql, data,(err, results) => {
