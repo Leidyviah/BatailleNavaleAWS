@@ -45,7 +45,8 @@ router.post('/', function(request, response) {
                           request.session.username = username;
                           request.session.save();
                           gameServer.newPlayer(username);
-                          response.render('welcome');
+                          response.redirect("/");
+                          //response.render('welcome');
                           response.end();
                       } else {
                           response.render('loginn',{message:'Usernmae and/or password is incorrect'});

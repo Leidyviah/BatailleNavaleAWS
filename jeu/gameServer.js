@@ -120,7 +120,7 @@ function gameServer() {
 				}
 			}
 			else {//user existe déjà
-				return '/join'; 
+				return '/'; 
 			}
 		}
 		else {// retour à l'acceuil si il n'a pas de pseudo
