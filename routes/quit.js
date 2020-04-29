@@ -21,9 +21,9 @@ router.get('/', function(req, res) {
     gameServer.updateAvailableGames();
 
   }
-	if (!res.session.loggedin) {
-		gameServer.removePlayer(username);
-	  req.session.destroy();
+	if (!res.session || !res.session.loggedin){
+    gameServer.removePlayer(username);
+    req.session.destroy();
 	}
 
 	res.redirect('/');

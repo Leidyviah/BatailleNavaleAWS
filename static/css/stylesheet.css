@@ -8,6 +8,9 @@
 body {
 	background-color: black;
 	background-image: url("https://images7.alphacoders.com/568/568756.jpg"); 
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
   background-repeat: no-repeat;
   font-family: 'Ubuntu', sans-serif;
 	color: white;
