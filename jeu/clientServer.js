@@ -41,12 +41,12 @@ var clientServer = function(gameServer, io) {
 				socket.on('send-chat-message', message => {
 					socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('chat-message', { message: message, name: self.getUsername(socket) })
 				});
-      socket.on("info-connexion", function() {
+      socket.on("infos-connexion", function() {
         let infos;
         if(socket.handshake.session.loggedin) {
-          infos = "Vous êtes connecté sous " + self.getUsername(socket) + ".";
+          infos = "Your are connected under " + self.getUsername(socket) + ".";
         } else {
-          infos = "Vous n'êtes pas connecté.";
+          infos = "Your are not connected.";
         }
         socket.emit("infos-connexion", infos);
       })

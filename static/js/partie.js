@@ -59,12 +59,16 @@ var game = new Vue({
 		socket.on('logout', function(response) {
 			window.location.href = '/logout';
 		});
-		appendMessage('You joined')
-		socket.emit('new-user', "Welcome")
+		appendMessage('You joined');
+		socket.emit('new-user');
 
 		socket.on('chat-message', data => {
 			appendMessage(`${data.name}: ${data.message}`)
-		})
+		});
+    
+    socket.on('user-connected', username => {
+      appendMessage(`${username} joined`);
+    })
 
 		messageForm.addEventListener('submit', e => {
  		 	e.preventDefault()
