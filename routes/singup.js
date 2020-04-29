@@ -53,7 +53,7 @@ router.post('/', function(req, res) {
   let sql = "INSERT INTO joueurs SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
-    res.redirect('/loginn',{messagee:'Singing up succes'});
+    res.render('loginn',{messagee:'Singing up succes'});
      res.end();
   });}
   else{
