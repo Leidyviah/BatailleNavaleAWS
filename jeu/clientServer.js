@@ -13,7 +13,7 @@ var clientServer = function(gameServer, io) {
 	self.init = function() {
 		
 		self.io.on('connection', function(socket) {
-
+      console.log("Connection function");
 			// si le joueur est enregistré
 			if (self.getUsername(socket)) {
 
@@ -27,6 +27,13 @@ var clientServer = function(gameServer, io) {
 						self.handleMultiplayerInitialization(socket);
 						self.handleMultiplayerGameConnection(socket);
 					}
+          
+          socket.on('new-user', function() {
+            socket.broadcast.emit('user-connected',self.getUsername(socket))
+          });
+          socket.on('send-chat-message', message => {
+            socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('chat-message', { message: message, name: self.getUsername(socket) })
+          });
 
 				} else {//sinon on lui propose les room existantes
 					self.sendAvailableGames(socket);
@@ -35,21 +42,16 @@ var clientServer = function(gameServer, io) {
 			} else {
 				self.handleDisconnect(socket);
 			}
-			socket.on('new-user', function() {
-				socket.broadcast.emit('user-connected',self.getUsername(socket))
-				});
-				socket.on('send-chat-message', message => {
-					socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('chat-message', { message: message, name: self.getUsername(socket) })
-				});
       socket.on("infos-connexion", function() {
+        console.log("socket_connexion");
         let infos;
         if(socket.handshake.session.loggedin) {
-          infos = "Your are connected under " + self.getUsername(socket) + ".";
+          infos = "<p>Your are connected under " + self.getUsername(socket) + ".</p>";
         } else {
-          infos = "Your are not connected.";
+          infos = "<p>Your are not connected.</p>";
         }
-        socket.emit("infos-connexion", infos);
-      })
+        socket.broadcast.emit("infos-connexion", infos);
+      });
 		});
 	};
 
