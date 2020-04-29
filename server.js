@@ -7,7 +7,11 @@ var ejs = require('ejs');
 var bodyParser = require('body-parser'); 
 var cookieParser = require('cookie-parser');
 var sharedsession = require("express-socket.io-session")
+var cookieSession = require('cookie-session');
 
+var gameServer = require('./jeu/gameServer.js');
+
+/**************************************************************************INITIALISATION**************************/
 //A relire  la doc pour mieux comprendre
 var session = require("express-session")({
   secret: "ZEHIU5348TQG8VT4VUJEZYSY483YA",
@@ -15,17 +19,13 @@ var session = require("express-session")({
   saveUninitialized: true
 }); 
 
-
-var gameServer = require('./jeu/gameServer.js');
-
-/**************************************************************************INITIALISATION**************************/
-
 var app = express();
 
+app.use(session); 
 var server = http.createServer(app);//création du serveur 
 
 
-app.use(session); 
+
 app.use(cookieParser()); 
 
 
@@ -36,9 +36,6 @@ var port = 8080;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
-
-
 
 
 app.use(express.static('static'));
@@ -52,7 +49,7 @@ var gameServer = new gameServer();//explicite
 
 var db = require("./jeu/connexion_db.js");
 
-var conn=db.getConnexionDb();
+//var conn=db.getConnexionDb();
 
 /******************************* SOCKETS********************************************************************************/
 
@@ -96,17 +93,25 @@ var logout = require('./routes/logout');
 app.use('/logout', logout);
 var login = require('./routes/loginn');
 app.use('/loginn', login);
+var auth = require('./routes/auth');
+app.use('/auth', auth);
+var parties = require('./routes/parties');
+app.use('/parties', parties);
+var joueurs = require('./routes/joueurs');
+app.use('/joueurs', joueurs);
+var save = require('./routes/singup');
+app.use('/save', save);
 /*
 var partie = require('./routes/parties');
 app.use('/parties', partie);*/
 //app.get('/', routes.index);
 var db_route = require('./routes/request_db');//inclure les routes des fonctions dans request_db
-app.get('/joueurs', db_route.list);//la lsite des jpueurs
+//app.get('/joueurs', db_route.list);//la lsite des jpueurs
 
-app.get('/parties', db_route.parties);//pour afficher les parties
-app.post('/auth', db_route.auth);//pour s'authentifier
+//app.get('/parties', db_route.parties);//pour afficher les parties
+//app.post('/auth', db_route.auth);//pour s'authentifier
 app.get('/sauv',db_route.sauv);//pour sauvgarder une partie
-app.post('/save',db_route.save);//pour ejouter un nouveau joueur
+//app.post('/save',db_route.save);//pour ejouter un nouveau joueur
 app.get('/log_out',db_route.logout);//pour se deconnecter
 /*******************ROUTE PRINCIPALE***************************/
 app.get('/', function(req, res) {
@@ -125,7 +130,6 @@ app.get('/', function(req, res) {
 
 //
 
-
 //on ecote app
 const listener = server.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
@@ -134,3 +138,4 @@ const listener = server.listen(process.env.PORT, () => {
 //en écoute
 //server.listen(port);
 
+module.exports = app; 

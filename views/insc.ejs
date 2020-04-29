@@ -12,14 +12,16 @@
 
   <div id="login" class="container text-center">
     <h1><br>BATAILLE NAVALE</h1>
-    <br><br>
-    <div v-for="message in messages" id="message" style="display: inline;" class='alert alert-danger'>
-      <span class="glyphicon glyphicon-info-sign"></span> &nbsp;{{message}}
+
+    <%if (locals.message){ %>
+    <div   class='alert alert-danger'>
+      <span class="glyphicon glyphicon-info-sign"></span> <%= message   %>
     </div>
+   <% }%>
 
     <div class="centerVertical alert alert-info">
       <div class="form-style-10">
-    <h1>Sign Up Now!<span>S'inscrire!</span></h1>
+    <h1>Sign Up Now!<span></span></h1>
        <form action="/save" method="post" >
              <div class="inner-wrap">
 
@@ -41,7 +43,7 @@
                     </div>
                  
                  <div class="button-section">
-                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                   <a href="loginn"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button></a>
                    <button type="submit" class="btn btn-primary">Sing up</button>
                  </div>
               

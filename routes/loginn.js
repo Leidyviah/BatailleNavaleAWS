@@ -13,9 +13,7 @@ router.get('/', function(req, res) {
 if(req.session.loggedin) {
         
         var correctRoute = gameServer.sendRoute(req.session.username);
-		res.redirect(correctRoute);
-        
-
+		res.redirect(correctRoute);        
 	}
    else
    {
