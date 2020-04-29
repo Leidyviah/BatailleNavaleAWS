@@ -41,7 +41,11 @@ function strRandom(o) {
 
 router.post('/', function(req, res) {
   if(req.body.password==req.body.password2){
-    let username = ent.encode(req.body.username);
+  let username = ent.encode(req.body.username);
+  conn.query('SELECT * FROM joueurs WHERE username = ?', [username], function(error, results, fields) {
+            if(error) throw error;
+            if (results.length < 1) {
+  
   let pass = ent.encode(req.body.password);
   let grain = strRandom({includeUpperCase: true, includeNumbers: true, length: 10, startsWithLowerCase: true});
   let passHacher= sha256(pass+grain);
@@ -51,9 +55,14 @@ router.post('/', function(req, res) {
     if(err) throw err;
     res.redirect('/loginn');
      res.end();
-  });
+  });}
+  else{
+    res.render('/insc',{message:'username déja exist'});
+    res.end();
+  }
+});
   }else {
-res.redirect('/insc');
+res.render('/insc',{message:'confirmation de mots passe est incorect '});
 res.end();
   }
 });
