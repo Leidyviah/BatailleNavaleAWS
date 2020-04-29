@@ -5,16 +5,41 @@
 	src: url("Bigboz.otf");
 }
 
-
 body {
+	background-color: black;
 	background-image: url("https://images7.alphacoders.com/568/568756.jpg");
 	font-family: 'Ubuntu', sans-serif;
 	color: white;
 }
 
-h1, h2, .divTableHeading {
+.container {
+	width: 98%;
+	margin-right: 1vmin;
+	margin-left: 1vmin;
+}
+
+h1, h2, h3, h4, .divTableHeading {
 	font-family: Bigboz;
-  	font-size: 25px;
+}
+
+h1 {
+  	font-size: 8vmin;
+}
+
+h2 {
+  	font-size: 6vmin;
+}
+
+h3 {
+	font-size: 5vmin;
+}
+
+h4, .divTableHeading {
+  	font-size: 4vmin;
+}
+
+h5 {
+	font-size: 3vmin;
 }
 
 .center {
@@ -26,6 +51,10 @@ h1, h2, .divTableHeading {
 }
 .no-margin {
 	margin: 0;
+}
+
+.block {
+	display: block;
 }
 
 .centerVertical {
@@ -41,6 +70,10 @@ h1, h2, .divTableHeading {
 	border: none;
 }
 
+#twoGrid .divTableCell, .divTableHead {
+	min-width: 20px;
+}
+
 .divTableRow {
 	display: table-row;
 }
@@ -49,20 +82,55 @@ h1, h2, .divTableHeading {
 	border: 1px solid #ccc;
 	display: table-cell;
 	padding: 0px;
-	width: 50px;
-	height: 50px;
-	min-width: 50px;
-	min-height: 50px;
+	width: 7vmin;
+	min-width: 7vmin;
+	max-width: 7vmin;
+	position: relative;
 }
+
+.divTableCell:after, .divTableHead:after {
+	content: '';
+	display: block;
+	padding-bottom: 100%;
+}
+
+.divTableCell > .contentCell {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
 .divTableHeading {
 	border:none;
 	vertical-align:middle;
 	text-align:center;
 }
 
+.contentCell img {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.contentCell img.right {
+	
+}
+
+.contentCell img.down  {
+	transform: rotate(0.25turn);
+}
+
+.contentCell img.superposed {
+	z-index: 2;
+}
+
 .divTableBody {
 	display: table-row-group;
-	width: auto;
+	margin: 0 auto;
 }
 
 #serverMessage {
@@ -75,6 +143,27 @@ h1, h2, .divTableHeading {
 	position: absolute;
 	top: 20px;
 	left: 20px;
+}
+
+#message-container {
+	background-color: black;
+	border: 2px white solid;
+	width: 80%;
+	height: 13vh;
+	margin-left: auto;
+	margin-right: auto;
+	overflow-y: scroll;
+}
+
+#send-container {
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+}
+
+#message-input {
+	margin-left: 10%;
+	width: 75%;
 }
 
 .bounceIn {
@@ -100,7 +189,10 @@ h1, h2, .divTableHeading {
 	pointer-events: none;
 }
 
-#attackGrid .btn-primary, #attackGrid .btn-success, #attackGrid .btn-warning, #attackGrid .btn-danger {
+#attackGrid {
+}
+
+#attackGrid .btn-primary, #attackGrid .btn-success, #attackGrid .btn-basic, #attackGrid .btn-warning, #attackGrid .btn-danger {
 	pointer-events: none;
 }
 
@@ -108,13 +200,13 @@ h1, h2, .divTableHeading {
 	margin-top: 5%;
 }
 
-.boatsTable > .divTableBody > .divTableRow > .divTableCell {
+.boatsTable > .divTableBody > .divTableRow > .divTableCell, .btn-primary {
 	background-color: purple;
 }
 
 
 /*ne marche pas sur google chrome*/
 .rotated {
-	transform: rotate(90deg);
+	transform: rotate(0.25turn);
 	transition: transform 0.3s ease-in-out;
 }

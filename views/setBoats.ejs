@@ -14,22 +14,22 @@
 <div id="boats">
 
     <!-- Title -->
-    <div class="container">
+    <div class="container-fluid">
     <div class="row">
     <h1 class="text-center title">BATAILLE NAVALE</h1>
     </div>
 
     <div class="row">
     <div class="col-sm-3 text-center">
-        <h3 class="no-margin">Drag boats (ne marche pas encore):</h3>
-        <h4>(double click to rotate boats)</h4>
+        <h3 class="no-margin">Drag boats</h3>
+        <h5>(double click to rotate boats)</h5>
 
         <div v-for='boat in battleship.boats' :key='boat.name'>
-            <h3>{{boat.name}}</h3>
+            <h4>{{boat.name}}</h4>
             <div :id='boat.name' v-on:dblclick="rotate(boat.name)" class="divTable draggable boatsTable">
                 <div class="divTableBody">
                     <div class="divTableRow">
-                        <div v-for='cell in boat.size' class="divTableCell">&nbsp;</div>
+                        <div v-for='cell in boat.imgSrcList' :value='cell' class="divTableCell"><div class="contentCell" ><img :src="cell" /></div></div>
                     </div>
                 </div>
             </div>
@@ -41,10 +41,10 @@
         <div id='myGrid' class="divTable center setBoatsTable">
             <div class="divTableBody">
                 <div class="divTableHeading divTableCell"></div>
-                <div v-for='col in battleship.grid.length' :value="col" class="divTableHeading divTableCell">{{String.fromCharCode(64+col)}}</div>
+                <div v-for='col in battleship.grid.length' :value="col" class="divTableHeading divTableCell"><div class="contentCell" >{{String.fromCharCode(64+col)}}</div></div>
                 <div v-for='row in battleship.grid.length' :value="row" class="divTableRow">
-                    <div class="divTableHeading divTableCell">{{row}}</div>
-                    <div v-for='cell in battleship.grid.length' :value='cell' class="divTableCell btn-default case">&nbsp;</div>
+                    <div class="divTableHeading divTableCell"><div class="contentCell" >{{row}}</div></div>
+                    <div v-for='cell in battleship.grid.length' :value='cell' class="divTableCell btn-default case"><div class="contentCell" >&nbsp;</div></div>
                 </div>
             </div>
         </div>

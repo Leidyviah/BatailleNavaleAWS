@@ -1,4 +1,4 @@
-function boat (name, size) {
+function boat (name, size, imgSrcList) {
 
 
 	this.name = name;
@@ -9,6 +9,7 @@ function boat (name, size) {
 	this.direction = 'right';//Position du bateau (right ou down)
 	this.coordinatesList = new Array(this.size).fill([0,0]); //liste des coordonées du bateau
 
+	this.imgSrcList = imgSrcList;
 
 	this.sink = function() {
 		this.isSunk = true;

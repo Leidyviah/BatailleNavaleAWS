@@ -47,7 +47,7 @@ router.post('/sendBoats', function(req, res) {
 	var errors = [];
 
 
-	if (req.body.randomSet) {//si le joueur veur que ses bateaux soient posés aléatoirement
+	if (req.body.randomSet) {//si le joueur veut que ses bateaux soient posés aléatoirement
 		battleship.randomSetBoats();
 	}
 	else {

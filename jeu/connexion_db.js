@@ -43,7 +43,7 @@ function handleDisconnect() {
     } else{
     	
 
-    }                                    
+    }
   });      */                               
              
   pool.on('connection', function (connection) {
@@ -56,7 +56,7 @@ function handleDisconnect() {
     console.log('db error', err);
     if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
       handleDisconnect();                         
-    } else {                                      
+    } else {
       throw err;                                  
     }
   });

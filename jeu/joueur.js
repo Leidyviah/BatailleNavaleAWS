@@ -22,8 +22,6 @@ function player(username) {
 		this.game = game;
 		this.game.player_two = this.username;
 	};
-
-
 };
 
 module.exports = player; 

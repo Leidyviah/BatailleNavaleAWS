@@ -32,16 +32,39 @@ function battleship() {
 
 	//ce sont les 5 bateaux qui sont dans les règles du jeu
 	this.boats = {
-		'carrier': new Boat('carrier', 5),
-		'battleship': new Boat('battleship', 4),
-		'cruiser': new Boat('cruiser', 3),
-		'submarine': new Boat('submarine', 3),
-		'destroyer': new Boat('destroyer', 2),
+		'carrier': new Boat('carrier', 5, [
+			"https://zupimages.net/up/20/17/blht.png",
+			"https://zupimages.net/up/20/17/jc22.png",
+			"https://zupimages.net/up/20/17/qset.png",
+			"https://zupimages.net/up/20/17/p18q.png",
+			"https://zupimages.net/up/20/17/8ioo.png"
+		]),
+		'battleship': new Boat('battleship', 4, [
+			"https://zupimages.net/up/20/15/dcwj.png",
+			"https://zupimages.net/up/20/15/asvd.png",
+			"https://zupimages.net/up/20/15/kjhz.png",
+			"https://zupimages.net/up/20/15/j8jn.png"
+		]),
+		'cruiser': new Boat('cruiser', 3, [
+			"https://zupimages.net/up/20/17/py6x.png",
+			"https://zupimages.net/up/20/17/b8iy.png",
+			"https://zupimages.net/up/20/17/avaa.png"
+		]),
+		'submarine': new Boat('submarine', 3, [
+			"https://zupimages.net/up/20/15/0bx7.png",
+			"https://zupimages.net/up/20/15/clgm.png",
+			"https://zupimages.net/up/20/15/0pm2.png"
+		]),
+		'destroyer': new Boat('destroyer', 2, [
+			"https://zupimages.net/up/20/15/s741.png",
+			"https://zupimages.net/up/20/15/j94t.png"
+		]),
 	};
 
 	this.areBoatsSet = false;
 	this.isTurn = false;
 
+	this.enemySunkBoat = {};
 
 	//vérifie si un bateau se trouve dans les coordonnées (x,y)
 	this.checkPosition = function (x, y) {
@@ -169,7 +192,7 @@ function battleship() {
 
 	//retourne le bateau qui vient d'être touché
 	this.findHitBoat = function(x, y) {
-
+		
 		for (boat in this.boats) {
 			for (coordinates of this.boats[boat].coordinatesList) {
 				if (coordinates[0] == x && coordinates[1] == y) {
@@ -178,7 +201,6 @@ function battleship() {
 			}
 		}
 	};
-
 
 	//couler le bateau
 	this.sinkBoatIfDestroyed = function(boat_name) {
@@ -206,9 +228,8 @@ function battleship() {
 
 	//couler le bateau enemie
 	this.sinkEnemyBoatIfDestroyed = function(boat_name, enemyPlayer) {
-
 		if (enemyPlayer.battleship.boats[boat_name].isSunk) {
-
+			this.enemySunkBoat[boat_name] = enemyPlayer.battleship.boats[boat_name];
 			for (coordinates of enemyPlayer.battleship.boats[boat_name].coordinatesList) {
 				var x = coordinates[0];
 				var y = coordinates[1];
