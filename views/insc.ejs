@@ -6,12 +6,12 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/css/stylesheet.css">
-  <title>AWS BATAILLE NAVALE</title>
+  <title>Sea Battle</title>
 </head>
 <body>
 
   <div id="login" class="container text-center">
-    <h1><br>BATAILLE NAVALE</h1>
+    <!-- <h1><br>SEA BATTLE</h1> -->
 
     <%if (locals.message){ %>
     <div   class='alert alert-danger'>
@@ -30,7 +30,7 @@
              <div class="inner-wrap">
                    
                       <label>Your username
-                       <input type="text" name="username" class="form-control" placeholder="username" required></label>
+                       <input type="text" name="username" class="form-control" placeholder="Username" required></label>
                    </div>
              <div class="inner-wrap">
                    
@@ -38,12 +38,12 @@
                        <input type="email" name="email" class="form-control" placeholder="Email" required></label>
                    </div>
                         <div class="inner-wrap">
-                        <label>Mots de passe <input type="password" name="password" required/></label>
-                        <label>Confirmarion <input type="password" name="password2" required/></label>
+                        <label>Password<input type="password" name="password" placeholder="Password" required/></label>
+                        <label>Confirmation<input type="password" name="password2" placeholder="Password" required/></label>
                     </div>
                  
                  <div class="button-section">
-                   <a href="loginn"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button></a>
+                   <a href="/"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button></a>
                    <button type="submit" class="btn btn-primary">Sing up</button>
                  </div>
               
