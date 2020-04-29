@@ -1,3 +1,4 @@
+var express = require('express');
 var gameServer = require('../server.js').gameServer;
 var io = require('../server.js').io;
 
