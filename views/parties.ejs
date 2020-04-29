@@ -20,20 +20,15 @@
       <thead>
         <tr>
           <th>Room ID</th>
-          <th>Gagnant </th>
-          <th>Loser </th>
-          <th>Winner score</th>
-          <th>Loser score</th>
+          <th>Player1 </th>
+          <th>Player2 </th>
         </tr>
       </thead>
       <tbody>
          <% results.forEach(function(res){ %>
             <tr>
-                <td><%= res.id %></td>
-                <td><%= res.gagnant %></td>
-                <td><%= res.perdu %></td>
-                <td><%= res.score_g %></td>
-                <td><%= res.score_p %></td>
+                <td><%= res.player_one %></td>
+                <td><%= res.player_two %></td>
             </tr>
         <% }); %>
       </tbody>

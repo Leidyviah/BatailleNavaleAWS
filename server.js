@@ -8,9 +8,6 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var sharedsession = require("express-socket.io-session")
 var cookieSession = require('cookie-session');
-var router=express.Router();
-
-
 
 var gameServer = require('./jeu/gameServer.js');
 
@@ -39,9 +36,6 @@ var port = 8080;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
-
-
 
 
 app.use(express.static('static'));
@@ -138,7 +132,6 @@ app.get('/', function(req, res) {
 
 //
 
-module.exports = router;
 //on ecote app
 const listener = server.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
@@ -147,3 +140,4 @@ const listener = server.listen(process.env.PORT, () => {
 //en écoute
 //server.listen(port);
 
+module.exports = app; 

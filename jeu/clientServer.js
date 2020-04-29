@@ -252,6 +252,16 @@ var clientServer = function(gameServer, io) {
 	}
 	
 	self.sendGameOverStatus = function(socket) {
+		var db = require("../jeu/connexion_db.js");
+		var conn=db.getConnexionDb();
+		var game = self.getUserGame(socket);
+		var player_one = game.player_one;
+		var player_two = game.player_two;
+		let data = { player_one: player_one, player_two: player_two};
+		  let sql = "INSERT INTO parties SET ?";
+		  let query = conn.query(sql, data,(err, results) => {
+		    if(err) throw err;
+		  });
 		var response = {
 			message: 'You lost. :(',
 			battleship: self.getEnemyPlayer(socket).battleship

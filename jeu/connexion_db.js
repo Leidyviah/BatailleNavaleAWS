@@ -83,14 +83,9 @@ CREATE TABLE IF NOT EXISTS `joueurs` (
 
 CREATE TABLE IF NOT EXISTS `parties` (
   id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  id_gagnant int(11) NOT NULL,
-  id_perdu int(11) NOT NULL,
-  score_g int(11) NOT NULL,
-  score_p int(11) NOT NULL,
-  CONSTRAINT FK_gagnant FOREIGN KEY (id_gagnant)
-    REFERENCES joueurs(id),
-   CONSTRAINT FK_perdu FOREIGN KEY (id_perdu)
-  REFERENCES joueurs(id)
+  player_one varchar(255) NOT NULL,
+  player_two int(255) NOT NULL
+  
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
