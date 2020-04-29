@@ -256,7 +256,7 @@ var clientServer = function(gameServer, io) {
 		var isia='true';
 		if(game.gameType=='multi'){
          isia='false';
-         player_two='IA'
+         player_two='IA';
 		}
 		let data = { player_one: player_one, player_two: player_two,isia: isia};
 		  let sql = "INSERT INTO parties SET ?";
