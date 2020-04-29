@@ -12,6 +12,11 @@
 
   <div id="login" class="container text-center">
     <h1><br>BATAILLE NAVALE</h1>
+    <%if (locals.messagee){ %>
+    <div   class='alert alert-success'>
+      <span class="glyphicon glyphicon-info-sign"></span> <%= messagee   %>
+    </div>
+   <% }%>
     <%if (locals.message){ %>
     <div   class='alert alert-danger'>
       <span class="glyphicon glyphicon-info-sign"></span> <%= message   %>

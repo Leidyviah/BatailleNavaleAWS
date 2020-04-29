@@ -53,16 +53,16 @@ router.post('/', function(req, res) {
   let sql = "INSERT INTO joueurs SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
-    res.redirect('/loginn');
+    res.redirect('/loginn',{messagee:'Singing up succes'});
      res.end();
   });}
   else{
-    res.render('insc',{message:'username déja exist'});
+    res.render('insc',{message:'Username already exist'});
     res.end();
   }
 });
   }else {
-res.render('insc',{message:'confirmation de mots passe est incorect '});
+res.render('insc',{message:'Confirmation  incorrect! Please verify your password and confirmation password '});
 res.end();
   }
 });

@@ -47,7 +47,7 @@ router.post('/', function(request, response) {
                           response.render('welcome');
                           response.end();
                       } else {
-                          response.render('loginn',{message:'Le nom d\'utilisateur! ou/et le mots de passe incorrect(s)'});
+                          response.render('loginn',{message:'Usernmae and/or password is incorrect'});
                           //response.send({message: grain});
                           //response.send({message: username});
 
@@ -59,14 +59,14 @@ router.post('/', function(request, response) {
                //response.send({message: grain});
                //response.end();
                                               } else {
-                          response.render('loginn',{message:'Le nom d\'utilisateur! ou/et le mots de passe incorrect(s)'});
+                          response.render('loginn',{message:'Usernmae and/or password is incorrect'});
                           response.end();
                       }           
                       
                   });
              }
             else {
-                  response.render('loginn',{message:'Veuillez entrer votre username et mots de passe'});
+                  response.render('loginn',{message:'Enter your username and your password'});
                   response.end();
               }
               
