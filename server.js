@@ -9,18 +9,18 @@ var cookieParser = require('cookie-parser');
 var sharedsession = require("express-socket.io-session")
 var cookieSession = require('cookie-session');
 var router=express.Router();
+
+
+
+var gameServer = require('./jeu/gameServer.js');
+
+/**************************************************************************INITIALISATION**************************/
 //A relire  la doc pour mieux comprendre
 var session = require("express-session")({
   secret: "ZEHIU5348TQG8VT4VUJEZYSY483YA",
   resave: true,
   saveUninitialized: true
 }); 
-
-
-var gameServer = require('./jeu/gameServer.js');
-
-/**************************************************************************INITIALISATION**************************/
-
 
 var app = express();
 

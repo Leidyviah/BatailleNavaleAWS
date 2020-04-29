@@ -44,6 +44,7 @@ router.post('/', function(request, response) {
                           request.session.ID = results2.id;
                           request.session.username = username;
                           request.session.save();
+                          gameServer.newPlayer(username);
                           response.render('welcome');
                           response.end();
                       } else {
