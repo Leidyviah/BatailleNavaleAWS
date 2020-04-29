@@ -16,11 +16,14 @@
     <span v-html="message"></span>
     <% if(loggedIn) {
         %>You are connected under <%= username%>.
+        <a href="logout"><button type="button" class="btn btn-success btn-lg">SIGN OUT</button></a>
     <% } else {
         %>You are not connected.
+        <a href="insc"><button type="button" class="btn btn-success btn-lg">SIGN UP</button></a>
+        <a href="loginn"><button type="button" class="btn btn-success btn-lg">SIGN IN</button></a>
     <% } %>
   </div>
-  <h1 style="font-size: 70px; line-height:2em; color: white;">AWS BATAILLE NAVALE</h1>
+  <h1>AWS BATAILLE NAVALE</h1>
   <br>
   <div class="row">
     <div class="col-md-4">

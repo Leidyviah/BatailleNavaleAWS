@@ -13,17 +13,6 @@ var clientServer = function(gameServer, io) {
 	self.init = function() {
 		
 		self.io.on('connection', function(socket) {
-      /*console.log("Connection function");
-      socket.on("infos-connexion", function() {
-        console.log("socket_connexion");
-        let infos;
-        if(socket.handshake.session.loggedin) {
-          infos = "<p>Your are connected under " + self.getUsername(socket) + ".</p>";
-        } else {
-          infos = "<p>Your are not connected.</p>";
-        }
-        socket.broadcast.emit("infos-connexion", infos);
-      });*/
 			// si le joueur est enregistré
 			if (self.getUsername(socket)) {
 
