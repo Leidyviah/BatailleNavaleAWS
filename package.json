@@ -4,7 +4,8 @@
   "description": "This is a battleship game in javascript with a server-client base",
   "main": "server.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",

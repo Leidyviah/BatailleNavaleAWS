@@ -28,7 +28,6 @@ var clientServer = function(gameServer, io) {
 						self.handleMultiplayerGameConnection(socket);
 					}
 
-					
 				} else {//sinon on lui propose les room existantes
 					self.sendAvailableGames(socket);
 				}
