@@ -30,8 +30,8 @@ var gameStatus = new Vue({
             }
         }.bind(this));
 
-        socket.on('logout', function(response) {
-            window.location.href = '/logout';
+        socket.on('quit', function(response) {
+            window.location.href = '/quit';
         });
     },
 

@@ -33,6 +33,7 @@ var clientServer = function(gameServer, io) {
           socket.on('send-chat-message', message => {
             socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('chat-message', { message: message, name: self.getUsername(socket) })
           });
+          
 
 				} else {//sinon on lui propose les room existantes
 					self.sendAvailableGames(socket);

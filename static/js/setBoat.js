@@ -29,8 +29,9 @@ var boats = new Vue({//vue contenant la grille de jeu
             window.setTimeout(boats.initializeDragAndDrop, 500);
         });
 
-        socket.on('logout', function(response) {
-            window.location.href = '/logout';
+        // déconenxion
+        socket.on('quit', function(response) {
+          window.location.href = '/quit'; // redirection 
         });
     },
 

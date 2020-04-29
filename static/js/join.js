@@ -25,8 +25,8 @@ var listGames = new Vue({
 		}.bind(this));
 
 		// déconenxion
-		socket.on('logout', function(response) {
-			window.location.href = '/logout'; // redirection 
+		socket.on('quit', function(response) {
+			window.location.href = '/quit'; // redirection 
 		});
 	},
 
