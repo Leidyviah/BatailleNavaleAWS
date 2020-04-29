@@ -7,12 +7,13 @@ Vue.http.options.emulateJSON = true;
 var infosConnexion = new Vue({
   el: '#infos_connexion',
   data: {
-    message: ''
+    message: '...'
   },
   created: function() {
     console.log("vue infosconnexion");
     socket.emit("infos-connexion");
     socket.on("infos-connexion", function(message){
+      console.log("socket reponse");
       this.message = message;
     }.bind(this));
   }                        
