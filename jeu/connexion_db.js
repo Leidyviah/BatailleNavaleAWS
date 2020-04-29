@@ -84,7 +84,8 @@ CREATE TABLE IF NOT EXISTS `joueurs` (
 CREATE TABLE IF NOT EXISTS `parties` (
   id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   player_one varchar(255) NOT NULL,
-  player_two int(255) NOT NULL
+  player_two varchar(255) NOT NULL,
+  isia varchar(2) NOT NULL
   
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
