@@ -13,7 +13,7 @@ var clientServer = function(gameServer, io) {
 	self.init = function() {
 		
 		self.io.on('connection', function(socket) {
-      console.log("Connection function");
+      /*console.log("Connection function");
       socket.on("infos-connexion", function() {
         console.log("socket_connexion");
         let infos;
@@ -23,7 +23,7 @@ var clientServer = function(gameServer, io) {
           infos = "<p>Your are not connected.</p>";
         }
         socket.broadcast.emit("infos-connexion", infos);
-      });
+      });*/
 			// si le joueur est enregistré
 			if (self.getUsername(socket)) {
 

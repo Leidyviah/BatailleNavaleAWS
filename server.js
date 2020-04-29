@@ -122,7 +122,8 @@ app.get('/', function(req, res) {
 	//if (req.session.loggedin) {
 
 	if (correctRoute == '/') {
-	 	res.render('welcome');
+	 	res.render('welcome', {loggedIn: res.session.loggedIn,
+                          username: res.session.username});
 	 }
 	 else {
 	 	res.redirect(correctRoute);
