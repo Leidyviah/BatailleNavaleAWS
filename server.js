@@ -106,7 +106,7 @@ app.use('/auth', auth);
 var parties = require('./routes/parties');
 app.use('/parties', parties);
 var joueurs = require('./routes/joueurs');
-app.use('/parties', joueurs);
+app.use('/joueurs', joueurs);
 var save = require('./routes/singup');
 app.use('/save', save);
 /*
