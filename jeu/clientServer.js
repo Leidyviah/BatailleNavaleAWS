@@ -252,11 +252,11 @@ var clientServer = function(gameServer, io) {
 		var conn=db.getConnexionDb();
 		var game = self.getUserGame(socket);
 		var player_one = game.player_one.username;
-		var player_two = game.player_two.username;
+		var player_two = 'IA';
 		var isia='true';
 		if(game.gameType=='multi'){
          isia='false';
-         player_two='IA';
+         player_two = game.player_two.username;
 		}
 		let data = { player_one: player_one, player_two: player_two,isia: isia};
 		  let sql = "INSERT INTO parties SET ?";
