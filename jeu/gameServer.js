@@ -1,6 +1,7 @@
 var player = require('./joueur.js'); 
 var game = require('./jeu.js'); 
-var AI = require('./ia.js'); 
+var AI = require('./ia.js');
+var io = require('../server.js').io;
 
 function gameServer() {
 
@@ -55,6 +56,7 @@ function gameServer() {
 			}
 		}
 		this.availableGames = newDict;
+    io.sockets.emit('listGame', this.availableGames);
 	};
 
 
