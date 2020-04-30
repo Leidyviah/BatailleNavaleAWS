@@ -31,7 +31,6 @@ var boats = new Vue({//vue contenant la grille de jeu
 
         // déconenxion
         socket.on('quit', function(response) {
-          
           window.location.href = '/quit'; // redirection 
         });
     },

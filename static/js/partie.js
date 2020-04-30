@@ -56,9 +56,9 @@ var game = new Vue({
 		}.bind(this));
 
 		//déconnexion
-		/*socket.on('quit', function(response) {
+		socket.on('quit', function(response) {
 			window.location.href = '/quit';
-		});*/
+		});
 		appendMessage('You joined');
 		socket.emit('new-user');
 
