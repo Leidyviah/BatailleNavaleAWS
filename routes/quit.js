@@ -10,7 +10,6 @@ var router = express.Router();
 router.get('/', function(req, res) {
 
 	var username = req.session.username;
-  var enemy = null;
   //quit le jeu
   if (gameServer.players[username].game) {
     let game = gameServer.players[username].game;
