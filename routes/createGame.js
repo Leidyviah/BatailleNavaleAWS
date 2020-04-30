@@ -10,7 +10,7 @@ var router = express.Router();
 router.get('/', function(req, res) {
 	var correctRoute = gameServer.sendRoute(req.session.username);
 	if (correctRoute == '/') {
-	 	res.render('createGame');
+	 	res.render('createGame', {loggedIn: req.session.loggedin});
 	 }
 	 else {
 	 	res.redirect(correctRoute);
@@ -20,14 +20,19 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
 
-	var username = req.body.username;
+  var username;
+	if(req.session.loggedin) {
+    username = req.session.username
+  } else {
+    username = req.body.username;
+    if (gameServer.usernameAlreadyExists(username)) {
+      res.status(406).send({message: "Username " + username + " exists"});
+    }
+  }
+  
 	var gameName = req.body.gameName;
 
-	if (gameServer.usernameAlreadyExists(username)) {
-		res.status(406).send({message: "Username " + username + " exists"});
-	}
-
-	else if (gameServer.gameNameAlreadyExists(gameName)) {
+	if (gameServer.gameNameAlreadyExists(gameName)) {
 		res.status(406).send({message: "Game name " + gameName + " exists"});
 	}
 	else { 

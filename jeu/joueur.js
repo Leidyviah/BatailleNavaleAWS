@@ -22,6 +22,10 @@ function player(username) {
 		this.game = game;
 		this.game.player_two = this.username;
 	};
+  
+  this.quitGame = function() {
+    this.game = null;
+  }
 };
 
 module.exports = player; 

@@ -45,7 +45,7 @@ function gameServer() {
 
 
 	this.updateAvailableGames = function() {
-		newDict = {};
+		let newDict = {};
 		for (var element in this.games) {
 			if (this.games[element].isAvailable()) {
 				newDict[element] = {
@@ -60,6 +60,12 @@ function gameServer() {
 
 	//delete la partie
 	this.removeGame = function(gameName) {
+    if(this.games[gameName].player_one){
+      this.games[gameName].player_one.quitGame();
+    }
+    if(this.games[gameName].player_two){
+      this.games[gameName].player_two.quitGame();
+    }
 		delete this.games[gameName];
 	};
 
@@ -120,7 +126,7 @@ function gameServer() {
 				}
 			}
 			else {//user existe déjà
-				return '/join'; 
+				return '/'; 
 			}
 		}
 		else {// retour à l'acceuil si il n'a pas de pseudo

@@ -13,7 +13,6 @@ var clientServer = function(gameServer, io) {
 	self.init = function() {
 		
 		self.io.on('connection', function(socket) {
-
 			// si le joueur est enregistré
 			if (self.getUsername(socket)) {
 
@@ -27,8 +26,15 @@ var clientServer = function(gameServer, io) {
 						self.handleMultiplayerInitialization(socket);
 						self.handleMultiplayerGameConnection(socket);
 					}
+          
+          socket.on('new-user', function() {
+            socket.broadcast.emit('user-connected',self.getUsername(socket))
+          });
+          socket.on('send-chat-message', message => {
+            socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('chat-message', { message: message, name: self.getUsername(socket) })
+          });
+          
 
-					
 				} else {//sinon on lui propose les room existantes
 					self.sendAvailableGames(socket);
 				}
@@ -36,12 +42,6 @@ var clientServer = function(gameServer, io) {
 			} else {
 				self.handleDisconnect(socket);
 			}
-			socket.on('new-user', function() {
-				socket.broadcast.emit('user-connected',self.getUsername(socket))
-				})
-				socket.on('send-chat-message', message => {
-					socket.broadcast.to(self.getEnemyPlayer(socket).socketId).emit('chat-message', { message: message, name: self.getUsername(socket) })
-				})
 		});
 	};
 
@@ -233,7 +233,7 @@ var clientServer = function(gameServer, io) {
 	
 	//prévenir le joueur que c'est son tour
 	self.sendNextTurnStatus = function(socket) {
-		response = {
+		let response = {
 			message: 'It is your turn',
 			battleship: self.getEnemyPlayer(socket).battleship
 		};
@@ -329,7 +329,7 @@ var clientServer = function(gameServer, io) {
 
 	//contre l'ia
 	self.sendAIResponse = function(socket) {
-		response = {
+		let response = {
 			message: "AI's turn.",
 			battleship: self.getUserBattleship(socket)
 		};
@@ -338,7 +338,7 @@ var clientServer = function(gameServer, io) {
 
 	
 	self.sendSoloResponse = function(socket) {
-		response = {
+		let response = {
 			message: "Your turn.",
 			battleship: self.getUserBattleship(socket)
 		};
@@ -351,7 +351,7 @@ var clientServer = function(gameServer, io) {
 			message: 'You\'re not connected',
 			redirect: '/'
 		}
-		socket.emit('logout', response);
+		socket.emit('quit', response);
 		socket.disconnect();
 	}
 

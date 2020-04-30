@@ -45,10 +45,11 @@ router.post('/', function(request, response) {
                           request.session.username = username;
                           request.session.save();
                           gameServer.newPlayer(username);
-                          response.render('welcome');
+                          response.redirect("/");
+                          //response.render('welcome');
                           response.end();
                       } else {
-                          response.render('loginn',{message:'Usernmae and/or password is incorrect'});
+                          response.render('loginn',{message:'Username and/or password is incorrect'});
                           //response.send({message: grain});
                           //response.send({message: username});
 
@@ -60,7 +61,7 @@ router.post('/', function(request, response) {
                //response.send({message: grain});
                //response.end();
                                               } else {
-                          response.render('loginn',{message:'Usernmae and/or password is incorrect'});
+                          response.render('loginn',{message:'Username and/or password is incorrect'});
                           response.end();
                       }           
                       

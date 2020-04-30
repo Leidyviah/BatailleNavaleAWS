@@ -6,13 +6,24 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/css/stylesheet.css">
-  <title>AWS BATAILLE NAVALE</title>
+  <title>Sea Battle</title>
 </head>
 <body>
 
 
 <section class="container text-center">
-  <h1 style="font-size: 70px; line-height:2em; color: white;">AWS BATAILLE NAVALE</h1>
+  <div id="infos_connexion">
+    <span v-html="message"></span>
+    <% if(loggedIn) {
+        %>You are connected under <%= username%>.
+        <a href="logout"><button type="button" class="btn btn-success btn-lg">SIGN OUT</button></a>
+    <% } else {
+        %>You are not connected.
+        <a href="insc"><button type="button" class="btn btn-success btn-lg">SIGN UP</button></a>
+        <a href="loginn"><button type="button" class="btn btn-success btn-lg">SIGN IN</button></a>
+    <% } %>
+  </div>
+  <h1>SEA BATTLE</h1>
   <br>
   <div class="row">
     <div class="col-md-4">
@@ -39,6 +50,9 @@
   </div>
 </section>
 
-
+  <!-- <script src="/node_modules/vue/dist/vue.js"></script>
+  <script src="/node_modules/vue-resource/dist/vue-resource.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/info_connexion.js"></script> -->
 </body>
 </html>

@@ -6,15 +6,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="/css/stylesheet.css">
-        <title>AWS BATAILLE NAVALE</title>
-        <style>
-          #message-input {
-            color: black;
-          }
-          #send-button{
-            background-color: black;
-          }
-      </style>
+        <title>Sea Battle</title>
     </head>
     <body>
 
@@ -24,10 +16,10 @@
 
             <!-- Title -->
             <div class="row">
-                <h1 class="text-center title">BATAILLE NAVALE</h1>
+                <h1 class="text-center title">SEA BATTLE</h1>
             </div>
 
-            <a id="logoutButton" href="/logout"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> &nbsp;Cancel</button></a>
+            <a id="logoutButton" href="quit"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> &nbsp;Cancel</button></a>
 
             <div v-if="serverMessage!=''" id="serverMessage" style="display: inline;" class='alert alert-info'><span class="glyphicon glyphicon-info-sign"></span> &nbsp;{{serverMessage}}</div>
 
@@ -85,8 +77,8 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 v-if="serverMessage == 'You won! ^^'" class="modal-title">GG WP !!</h4>
-                  <h4 v-else class="modal-title">You lost :(</h4>
+                  <h4 v-if="serverMessage == 'You won! ^^'" class="modal-title">Congratulations for your victory !</h4>
+                  <h4 v-else class="modal-title">You lost.</h4>
                 </div>
                 <div class="modal-body">
                   <p>Thank you for playing ^^</p>

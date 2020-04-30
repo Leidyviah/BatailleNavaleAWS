@@ -295,6 +295,10 @@ function AI(game) {
 
 		this.evaluateSubArray();
 	};
+  
+  this.quitGame = function() {
+    this.game = null;
+  }
 
 
 }

@@ -6,12 +6,12 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/css/stylesheet.css">
-  <title>AWS BATAILLE NAVALE</title>
+  <title>Sea Battle</title>
 </head>
 <body>
 
   <div id="login" class="container text-center">
-    <h1><br>BATAILLE NAVALE</h1>
+    <h1><br>SEA BATTLE</h1>
     <br><br>
     <div v-for="message in messages" id="message" style="display: inline;" class='alert alert-danger'>
       <span class="glyphicon glyphicon-info-sign"></span> &nbsp;{{message}}
@@ -22,6 +22,7 @@
         <label for="username">Username</label>
         <input v-model="username" type="text" class="form-control" placeholder="Toto" autofocus>
       </div>
+      <a href="/"><button type="button" class="btn btn-secondary">Back</button></a>
       <button v-on:click="login" type="submit" class="btn btn-primary">Submit</button>
     </div>
   </div>

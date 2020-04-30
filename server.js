@@ -93,6 +93,8 @@ var solo = require('./routes/solo');
 app.use('/solo', solo);
 var logout = require('./routes/logout');
 app.use('/logout', logout);
+var quit = require('./routes/quit');
+app.use('/quit', quit);
 var login = require('./routes/loginn');
 app.use('/loginn', login);
 var auth = require('./routes/auth');
@@ -114,7 +116,6 @@ var db_route = require('./routes/request_db');//inclure les routes des fonctions
 //app.post('/auth', db_route.auth);//pour s'authentifier
 app.get('/sauv',db_route.sauv);//pour sauvgarder une partie
 //app.post('/save',db_route.save);//pour ejouter un nouveau joueur
-app.get('/log_out',db_route.logout);//pour se deconnecter
 /*******************ROUTE PRINCIPALE***************************/
 app.get('/', function(req, res) {
 	var correctRoute = gameServer.sendRoute(req.session.username);
@@ -122,7 +123,8 @@ app.get('/', function(req, res) {
 	//if (req.session.loggedin) {
 
 	if (correctRoute == '/') {
-	 	res.render('welcome');
+	 	res.render('welcome', {loggedIn: req.session.loggedin,
+                          username: req.session.username});
 	 }
 	 else {
 	 	res.redirect(correctRoute);

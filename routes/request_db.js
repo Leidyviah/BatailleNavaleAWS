@@ -166,8 +166,3 @@ exports.sauv = function(req, res) {
     res.end();
   });
 };
-//se deconnceter
-exports.logout=function(req,res,next){
-  req.session.loggedin=false;
-  res.redirect('/loginn');
-};

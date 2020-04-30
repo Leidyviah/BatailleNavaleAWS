@@ -11,23 +11,16 @@ var router = express.Router();
 
 router.get('/', function(req, res) {
 
-
-	var correctRoute = gameServer.sendRoute(req.session.username);
-
-	if (correctRoute == '/join') {
-		res.render('join');
-	}
-
-	else if (correctRoute == '/') {
-		res.render('login');
-	} 
-
-
-	else {
-		res.redirect(correctRoute);
-	}
-
-
+  if(req.session.username){
+    var correctRoute = gameServer.sendRoute(req.session.username);
+    if(correctRoute == '/join' || correctRoute == '/'){
+      res.render('join');
+    } else {
+		  res.redirect(correctRoute);
+    }
+  } else {
+    res.render('login');
+  }
 });
 
 
@@ -65,7 +58,7 @@ router.post('/game', function(req, res, callback) {
 		gameServer.joinMultiplayerGame(gameName, player);
 		res.send({redirect: '/initialization'});
 	} else {
-		isGameFull = true;
+		//isGameFull = true;
 		res.send({redirect: '/join'});
 	}
 });
