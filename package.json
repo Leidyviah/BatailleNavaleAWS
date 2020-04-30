@@ -4,14 +4,13 @@
   "description": "This is a battleship game in javascript with a server-client base",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.ensta.fr:michelin/IN104-Battleship.git"
+    "url": ""
   },
-  "author": "Francois Hendriks & Louis-Marie Michelin",
+  "author": "FLORA CARRÉ & AMINE CHERGOU & HAJAR AIT IHYA & KARSHAN KETHEESWARAN & RAPHAËL GILLOT-ROUX",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.1",
