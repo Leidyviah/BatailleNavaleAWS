@@ -60,6 +60,8 @@ function gameServer() {
 
 	//delete la partie
 	this.removeGame = function(gameName) {
+    this.games[gameName].player_one.quitGame();
+    this.games[gameName].player_two.quitGame();
 		delete this.games[gameName];
 	};
 

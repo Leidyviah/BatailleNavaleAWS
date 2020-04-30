@@ -16,16 +16,17 @@ router.get('/', function(req, res) {
   //quit le jeu
   if (gameServer.players[username].game) {
     let game = gameServer.players[username].game;
+    
+    gameServer.removeGame(gameServer.players[username].game.name);
+    gameServer.updateAvailableGames();
+    
     let enemy;
     if(game.player_one.username == req.session.username){
       enemy = game.player_two.socketId;
     } else {
       enemy = game.player_one.socketId;
     }
-    io.sockets.broadcast.to(enemy).emit('quit');
-
-    gameServer.removeGame(gameServer.players[username].game.name);
-    gameServer.updateAvailableGames();
+    io.sockets.to(enemy).emit('quit');
 
   }
 	if (!req.session.loggedin){
