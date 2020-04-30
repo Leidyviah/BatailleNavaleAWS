@@ -109,12 +109,12 @@ app.use('/save', save);
 var partie = require('./routes/parties');
 app.use('/parties', partie);*/
 //app.get('/', routes.index);
-var db_route = require('./routes/request_db');//inclure les routes des fonctions dans request_db
+//var db_route = require('./routes/request_db');//inclure les routes des fonctions dans request_db
 //app.get('/joueurs', db_route.list);//la lsite des jpueurs
 
 //app.get('/parties', db_route.parties);//pour afficher les parties
 //app.post('/auth', db_route.auth);//pour s'authentifier
-app.get('/sauv',db_route.sauv);//pour sauvgarder une partie
+//app.get('/sauv',db_route.sauv);//pour sauvgarder une partie
 //app.post('/save',db_route.save);//pour ejouter un nouveau joueur
 /*******************ROUTE PRINCIPALE***************************/
 app.get('/', function(req, res) {
