@@ -44,7 +44,6 @@ app.set('views', path.join(__dirname,'views'));//pour les templates
 app.set('view engine', 'ejs');
 
 
-var gameServer = new gameServer();//explicite
 //database
 
 var db = require("./jeu/connexion_db.js");
@@ -61,7 +60,7 @@ io.use(sharedsession(session, {
 }));
 
 
-
+var gameServer = new gameServer(io);//explicite
 
 var ClientServer = require('./jeu/clientServer.js');
 var clientServer = new ClientServer(gameServer, io);

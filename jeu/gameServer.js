@@ -1,10 +1,9 @@
 var player = require('./joueur.js'); 
 var game = require('./jeu.js'); 
 var AI = require('./ia.js');
-var io = require('../server.js').io;
 
-function gameServer() {
-
+function gameServer(io) {
+  this.io = io;
 	this.games = {};//liste des parties
 	this.availableGames = {};
 	this.players = {};//tout les joueurs actuels
@@ -56,7 +55,7 @@ function gameServer() {
 			}
 		}
 		this.availableGames = newDict;
-    io.sockets.emit('listGame', this.availableGames);
+    io.sockets.emit('listGames', this.availableGames);
 	};
 
 
