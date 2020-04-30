@@ -7,8 +7,6 @@ var io = require('../server.js').io;
 var router = express.Router(); 
 
 
-//DECONNEXION A REVOIR !!!
-
 router.get('/', function(req, res) {
 
 	var username = req.session.username;
@@ -17,9 +15,6 @@ router.get('/', function(req, res) {
   if (gameServer.players[username].game) {
     let game = gameServer.players[username].game;
     
-    gameServer.removeGame(gameServer.players[username].game.name);
-    gameServer.updateAvailableGames();
-    
     let enemy;
     if(game.player_one.username == req.session.username){
       enemy = game.player_two.socketId;
@@ -27,6 +22,9 @@ router.get('/', function(req, res) {
       enemy = game.player_one.socketId;
     }
     io.sockets.to(enemy).emit('quit');
+    
+    gameServer.removeGame(gameServer.players[username].game.name);
+    gameServer.updateAvailableGames();
 
   }
 	if (!req.session.loggedin){
