@@ -10,6 +10,8 @@ var router = express.Router();
 
 router.get('/', function(req, res)  {
 
+if(req.session.loggedin) {
+
   let sql = "SELECT * FROM joueurs";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
@@ -18,6 +20,10 @@ router.get('/', function(req, res)  {
     });
     res.end();
   });
+}else
+   {
+   	res.render('/');
+ }
 });
 
 module.exports = router;

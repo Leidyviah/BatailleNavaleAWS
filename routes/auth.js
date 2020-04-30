@@ -14,27 +14,24 @@ var router = express.Router();
 
 
 router.post('/', function(request, response) {
-    //var username = request.body.username;
-    //var password = request.body.password;
+  //ça pertmet d'encoder les données de connexion entrés par l'utilisateur username & password
     var username = ent.encode(request.body.username);
     var password = ent.encode(request.body.password);
-    if (username && password) {
+    if (username && password) { // on test si l'utilisateur à entrer ses données
     var grain ;
-    //response.send({message: username});
+    //cette requette permet de recuperer le grain pour qu'on peut chiffrer le mots passe entré par l'utilisateur
     conn.query('SELECT * FROM joueurs WHERE username = ?', [username], function(error, results, fields) {
             if(error) throw error;
-            if (results.length > 0) {
+            if (results.length > 0) {//le cas au le username exist
               
               console.log('grain:',results[0].grain);
               console.log('grain:',results[0]);
-              
-                //response.send({message: results[0].grain});
-                //response.end();
-                grain = results[0].grain;
 
+                grain = results[0].grain;
                 //on  hash le mots de passe entre par l'utilisateur 
                let passHacher=sha256(password+grain);
                console.log('passHacher:',passHacher);
+               //maintenant on recupere le password et on teste si il est correcte
                conn.query('SELECT * FROM joueurs WHERE username = ? AND password = ?', [username, passHacher], function(error2, results2, fields2) {
                       console.log('res',results2);
                       console.log('res',results2.length);
@@ -50,20 +47,17 @@ router.post('/', function(request, response) {
                           response.end();
                       } else {
                           response.render('loginn',{message:'Username and/or password is incorrect'});
-                          //response.send({message: grain});
-                          //response.send({message: username});
 
                           
                           response.end();
                       }           
                       
                   });
-               //response.send({message: grain});
-               //response.end();
-                                              } else {
+
+                } else {
                           response.render('loginn',{message:'Username and/or password is incorrect'});
                           response.end();
-                      }           
+                }           
                       
                   });
              }
