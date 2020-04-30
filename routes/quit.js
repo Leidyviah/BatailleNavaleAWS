@@ -16,10 +16,11 @@ router.get('/', function(req, res) {
     let game = gameServer.players[username].game;
     
     if(game.gameType == "multi"){
-      
-      gameServer.removeGame(game.name);
-      gameServer.updateAvailableGames();
+      io.sockets.to(gameServer.players[username].socketId).emit("quit");
+      game.gameType = 'solo';
     }
+    gameServer.removeGame(game.name);
+    gameServer.updateAvailableGames();
   }
   if(!req.session.loggedin){
     gameServer.removePlayer(username);
