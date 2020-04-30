@@ -1,7 +1,16 @@
-##UTILISATION LOCALE
+*Présentation*
 
-Excécuter la ocmmande "npm install" pour installer les dépendances (modules)
+https://shielded-eyrie-17182.herokuapp.com/
+Sea Battle vous propose une expérience gratuite en ligne de la bataille navale. Jouez sur une
+interface épurée au design spatial ! Sans inscription obligatoire, ni publicité, ni aucune installation
+venez jouer contre l’ordinateur, vos amis ou des inconnus ! Des parties courtes et rapides idéales
+pour tuer le temps entre deux pauses café.
 
-pour lancer le jeu sur navigateur, go à l'adresse: "http://localhost:8080"
-
+*Auteurs*
+Projet réalisé par :
+FLORA CARRÉ
+AMINE CHERGOU
+HAJAR AIT IHYA
+KARSHAN KETHEESWARAN
+RAPHAËL GILLOT-ROUX
 
