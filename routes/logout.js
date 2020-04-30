@@ -24,7 +24,7 @@ router.get('/', function(req, res) {
 		gameServer.removePlayer(username);
 	}
 
-	//req.session.destroy();
+	req.session.destroy();
 
 	res.redirect('/');
 });
