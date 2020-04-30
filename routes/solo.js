@@ -12,17 +12,16 @@ router.get('/', function(req, res) {
 	if (correctRoute == '/') {
 		
 
-		req.session.username = req.sessionID;
+		if(!req.session.loggedin) {
+      req.session.username = req.sessionID;
+    }
 		req.session.save();
-
-		var UserID = req.sessionID;//attribution d'un ID
 
 
 	
-		gameServer.newPlayer(UserID);//création d'un joueu(player) avec cet id
+		gameServer.newPlayer(req.session.username);//création d'un joueu(player) avec cet id
 
-
-		gameServer.createSoloGame(gameServer.players[UserID]);//contre l'ia
+		gameServer.createSoloGame(gameServer.players[req.session.username]);//contre l'ia
 
 		
 		res.redirect('/setBoats');
