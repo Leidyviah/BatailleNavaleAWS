@@ -15,16 +15,20 @@ router.get('/', function(req, res) {
   if (gameServer.players[username].game) {
     let game = gameServer.players[username].game;
     
-    io.sockets.clients(game.name).forEach(function(s){
-        s.leave(game.name);
-        if(!s.handshake.session.loggedin) {
-          gameServer.removePlayer(s.handshake.session.username);
-          s.disconnect();
-        }
-    });
+    if(game.gameType == "multi"){
+      if(game.player_one.username == username){
+        io.sockets.sockets[game.player_two.socketId].leave(game.name);
+        if(io.sockets.sockets[game.player_two.socketId].disconnect();
+      }
+    }
+    io.sockets.sockets[socketId].leave
     
     gameServer.removeGame(game.name);
     gameServer.updateAvailableGames();
+  }
+  if(!req.session.loggedin){
+    gameServer.removePlayer(username);
+    req.session.destroy();
   }
 	res.redirect('/');
 });
