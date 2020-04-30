@@ -233,7 +233,7 @@ var clientServer = function(gameServer, io) {
 	
 	//prévenir le joueur que c'est son tour
 	self.sendNextTurnStatus = function(socket) {
-		response = {
+		let response = {
 			message: 'It is your turn',
 			battleship: self.getEnemyPlayer(socket).battleship
 		};
@@ -324,7 +324,7 @@ var clientServer = function(gameServer, io) {
 
 	//contre l'ia
 	self.sendAIResponse = function(socket) {
-		response = {
+		let response = {
 			message: "AI's turn.",
 			battleship: self.getUserBattleship(socket)
 		};
@@ -333,7 +333,7 @@ var clientServer = function(gameServer, io) {
 
 	
 	self.sendSoloResponse = function(socket) {
-		response = {
+		let response = {
 			message: "Your turn.",
 			battleship: self.getUserBattleship(socket)
 		};
@@ -346,7 +346,7 @@ var clientServer = function(gameServer, io) {
 			message: 'You\'re not connected',
 			redirect: '/'
 		}
-		socket.emit('logout', response);
+		socket.emit('quit', response);
 		socket.disconnect();
 	}
 
