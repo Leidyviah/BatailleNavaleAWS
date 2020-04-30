@@ -22,6 +22,7 @@
           <th>Room ID</th>
           <th>Player1 </th>
           <th>Player2 </th>
+          <th>Date & Time </th>
         </tr>
       </thead>
       <tbody>
@@ -29,6 +30,7 @@
             <tr>
                 <td><%= res.player_one %></td>
                 <td><%= res.player_two %></td>
+                <td><%= res.created_at %></td>
             </tr>
         <% }); %>
       </tbody>
