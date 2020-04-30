@@ -9,9 +9,11 @@ pour tuer le temps entre deux pauses café.
 
 # Auteurs
 Projet réalisé par :
-FLORA CARRÉ
-AMINE CHERGOU
-HAJAR AIT IHYA
-KARSHAN KETHEESWARAN
+
+FLORA CARRÉ, 
+AMINE CHERGOU, 
+HAJAR AIT IHYA, 
+KARSHAN KETHEESWARAN, 
 RAPHAËL GILLOT-ROUX
+
 
