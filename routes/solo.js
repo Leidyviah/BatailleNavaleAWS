@@ -5,14 +5,12 @@ var gameServer = require('../server.js').gameServer;
 
 var router = express.Router();
 
-
-
 router.get('/', function(req, res) {
 	var correctRoute = gameServer.sendRoute(req.session.username);
 	if (correctRoute == '/') {
 		
 
-		if(!req.session.loggedin) {
+	if(!req.session.loggedin) {
       req.session.username = req.sessionID;
     }
 		req.session.save();

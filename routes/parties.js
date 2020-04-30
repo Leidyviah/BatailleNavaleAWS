@@ -12,9 +12,9 @@ var router = express.Router();
 
 router.get('/', function(req, res)  {
   conn=db.getConnexionDb();
-  let sql = "select * from parties   ";
-  let query = conn.query(sql, [req.session.ID,req.session.ID], (err, results) => {
-    console.log('id test parties:',req.session.ID);
+  let sql = "select * from parties where player_one = ? or player_two = ? ";
+  let query = conn.query(sql, [req.session.username,req.session.username], (err, results) => {
+    console.log('id test parties:',req.session.username);
     if(err) throw err;
     res.render('parties',{results: results});
     res.end();
