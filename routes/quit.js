@@ -18,10 +18,20 @@ router.get('/', function(req, res) {
     if(game.gameType == "multi"){
       if(game.player_one.username == username){
         io.sockets.sockets[game.player_two.socketId].leave(game.name);
-        if(io.sockets.sockets[game.player_two.socketId].disconnect();
+        if(!io.sockets.sockets[game.player_two.socketId].handshake.session.loggedin){
+          gameServer.removePlayer(game.player_two.username);
+          io.sockets.sockets[game.player_two.socketId].disconnect();
+        }
+        io.sockets.sockets[game.player_two.socketId].
+      } else {
+        io.sockets.sockets[game.player_one.socketId].leave(game.name);
+        if(!io.sockets.sockets[game.player_one.socketId].handshake.session.loggedin){
+          gameServer.removePlayer(game.player_one.username);
+          io.sockets.sockets[game.player_one.socketId].disconnect();
+        }
+        io.
       }
     }
-    io.sockets.sockets[socketId].leave
     
     gameServer.removeGame(game.name);
     gameServer.updateAvailableGames();
