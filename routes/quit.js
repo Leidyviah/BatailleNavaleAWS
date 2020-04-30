@@ -22,10 +22,10 @@ router.get('/', function(req, res) {
     gameServer.removeGame(game.name);
     gameServer.updateAvailableGames();
   }
-  if(!req.session.loggedin){
+  /*if(!req.session.loggedin){
     gameServer.removePlayer(username);
     req.session.destroy();
-  }
+  }*/
 	res.redirect('/');
 });
 
