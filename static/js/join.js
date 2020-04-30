@@ -24,10 +24,10 @@ var listGames = new Vue({
 			this.gamesList  = availableGames;
 		}.bind(this));
 
-		// déconenxion
+		/*// déconenxion
 		socket.on('quit', function(response) {
 			window.location.href = '/quit'; // redirection 
-		});
+		});*/
 	},
 
 	
