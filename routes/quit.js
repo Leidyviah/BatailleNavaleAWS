@@ -31,15 +31,14 @@ router.get('/', function(req, res) {
       }
       game.gameType = 'solo';
     }
-    else {
-      gameServer.removeGame(game.name);
-      gameServer.updateAvailableGames();
-    }
+    gameServer.removeGame(game.name);
+    gameServer.updateAvailableGames();
   }
   if(!req.session.loggedin){
     gameServer.removePlayer(username);
     req.session.destroy();
   }
+  
 	res.redirect('/');
 });
 

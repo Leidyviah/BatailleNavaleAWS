@@ -25,6 +25,8 @@ function player(username) {
   
   this.quitGame = function() {
     this.game = null;
+    this.battleship = new battleship();
+    this.isTurn = false;
   }
 };
 
