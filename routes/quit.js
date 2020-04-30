@@ -16,25 +16,28 @@ router.get('/', function(req, res) {
     let game = gameServer.players[username].game;
     
     if(!(game.player_two===null || game.player_one===null)){
-      //let enemy;
+      let enemy;
       if(game.player_one.username == req.session.username){
-        //enemy = game.player_two.socketId;
+        enemy = game.player_two.socketId;
+        game.player_one.quitGame();
         game.player_one = null;
       } else {
-        //enemy = game.player_one.socketId;
+        enemy = game.player_one.socketId;
+        game.player_two.quitGame();
         game.player_two = null;
       }
-      io.sockets.to(game.name).emit('quit');
+      io.sockets.to(enemy).emit('quit');
     }
     
     gameServer.removeGame(game.name);
     gameServer.updateAvailableGames();
   }
-	if (!req.session.loggedin){
+	/*if (!req.session.loggedin){
     gameServer.removePlayer(username);
     req.session.destroy();
-	}
-
+	} else {
+    req.session.username = username;
+  }*/
 	res.redirect('/');
 });
 

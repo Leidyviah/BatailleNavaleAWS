@@ -45,7 +45,7 @@ function gameServer() {
 
 
 	this.updateAvailableGames = function() {
-		newDict = {};
+		let newDict = {};
 		for (var element in this.games) {
 			if (this.games[element].isAvailable()) {
 				newDict[element] = {
@@ -60,8 +60,12 @@ function gameServer() {
 
 	//delete la partie
 	this.removeGame = function(gameName) {
-    this.games[gameName].player_one.quitGame();
-    this.games[gameName].player_two.quitGame();
+    if(this.games[gameName].player_one){
+      this.games[gameName].player_one.quitGame();
+    }
+    if(this.games[gameName].player_two){
+      this.games[gameName].player_two.quitGame();
+    }
 		delete this.games[gameName];
 	};
 
