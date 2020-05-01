@@ -256,7 +256,7 @@ var clientServer = function(gameServer, io) {
 		var isia='false';
 		if(game.gameType!='multi'){
 	         isia='true';
-	         if(self.gameServer.players[self.getUsername(socket).isTurn==false){
+	         if(self.gameServer.players[self.getUsername(socket)].isTurn==false){
 	         	player_one="IA";
 	         	player_two = self.getEnemyPlayer(socket).username;
 
