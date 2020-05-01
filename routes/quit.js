@@ -11,6 +11,10 @@ router.get('/', function(req, res) {
 
 	var username = req.session.username;
   //quit le jeu
+  if(!username in gameServer.players){
+    res.redirect('/');
+    res.end();
+  }
   if (gameServer.players[username].game) {
     let game = gameServer.players[username].game;
     

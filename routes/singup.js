@@ -40,30 +40,35 @@ function strRandom(o) {
 
 
 router.post('/', function(req, res) {
-  if(req.body.password==req.body.password2){
-  let username = ent.encode(req.body.username);
-  conn.query('SELECT * FROM joueurs WHERE username = ?', [username], function(error, results, fields) {
-            if(error) throw error;
-            if (results.length < 1) {
-  
-  let pass = ent.encode(req.body.password);
-  let grain = strRandom({includeUpperCase: true, includeNumbers: true, length: 10, startsWithLowerCase: true});
-  let passHacher= sha256(pass+grain);
-  let data = {email: req.body.email, username: username, fullname: req.body.fullname,password: passHacher,grain: grain};
-  let sql = "INSERT INTO joueurs SET ?";
-  let query = conn.query(sql, data,(err, results) => {
-    if(err) throw err;
-    res.render('loginn',{messagee:'Singing up succes'});
-     res.end();
-  });}
-  else{
-    res.render('insc',{message:'Username already exist'});
+  if(req.body.username.startsWith("Guest#")){
+    res.render('insc',{message:'Your are not a guest.'});
     res.end();
-  }
-});
-  }else {
-res.render('insc',{message:'Confirmation  incorrect! Please verify your password and confirmation password '});
-res.end();
+  } else {
+    if(req.body.password==req.body.password2){
+      let username = ent.encode(req.body.username);
+      conn.query('SELECT * FROM joueurs WHERE username = ?', [username], function(error, results, fields) {
+                if(error) throw error;
+                if (results.length < 1) {
+
+      let pass = ent.encode(req.body.password);
+      let grain = strRandom({includeUpperCase: true, includeNumbers: true, length: 10, startsWithLowerCase: true});
+      let passHacher= sha256(pass+grain);
+      let data = {email: req.body.email, username: username, fullname: req.body.fullname,password: passHacher,grain: grain};
+      let sql = "INSERT INTO joueurs SET ?";
+      let query = conn.query(sql, data,(err, results) => {
+        if(err) throw err;
+        res.render('loginn',{messagee:'Singing up succes'});
+         res.end();
+      });}
+      else{
+        res.render('insc',{message:'Username already exist'});
+        res.end();
+      }
+    });
+    }else {
+      res.render('insc',{message:'Confirmation  incorrect! Please verify your password and confirmation password '});
+      res.end();
+    }
   }
 });
 
