@@ -258,7 +258,7 @@ var clientServer = function(gameServer, io) {
 	         isia='true';
 	         if(self.gameServer.players[self.getUsername(socket)].isTurn==false){
 	         	player_one="IA";
-	         	player_two = self.getEnemyPlayer(socket).username;
+	         	player_two = self.getUsername(socket);
 
 	         }else{
 	         	
