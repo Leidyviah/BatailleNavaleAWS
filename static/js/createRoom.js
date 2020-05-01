@@ -20,7 +20,7 @@ var createGame = new Vue({
 			this.messages = [];
       let error = false;
 			//si les infos ne sont pas correctement entrées
-			/*if (this.username == '') { 
+			/*if (this.username == '') { //l'utilisateur connecté n'a pas d'input username
 				this.messages.push('Add username');
       }*/
 
