@@ -20,6 +20,7 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
 
+  let error = false;
   var username;
 	if(req.session.loggedin) {
     username = req.session.username
@@ -27,6 +28,7 @@ router.post('/', function(req, res) {
     username = "Invite#" + req.body.username;
     if (gameServer.usernameAlreadyExists(username)) {
       res.status(406).send({message: "Username " + username + " exists"});
+      error = true;
     }
   }
   
@@ -34,8 +36,10 @@ router.post('/', function(req, res) {
 
 	if (gameServer.gameNameAlreadyExists(gameName)) {
 		res.status(406).send({message: "Game name " + gameName + " exists"});
+    error = true;
 	}
-	else { 
+	
+  if(!error) { 
 
 		req.session.username = username; 
 

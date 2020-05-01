@@ -18,15 +18,19 @@ var createGame = new Vue({
 		uploadForm: function(event) {
 			// vider les message d'erreur (réinitialiser)
 			this.messages = [];
-
+      let error = false;
 			//si les infos ne sont pas correctement entrées
 			if (this.username == '') {
 				this.messages.push('Add username');
-			}
+        error = true;
+      }
 
 			if (this.gameName == '') {
 				this.messages.push('Add room name')
-			} else 
+        error = true;
+			}
+      
+      if (!error)
 			{
 				//si les infos sont correctement entrées
 				this.$http.post('/createGame', {
