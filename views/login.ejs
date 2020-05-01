@@ -13,11 +13,11 @@
   <div id="login" class="container text-center">
     <h1><br>SEA BATTLE</h1>
     <br><br>
-    <div v-for="message in messages" id="message" style="display: inline;" class='alert alert-danger'>
+    <div v-for="message in messages" id="message" style="display: inline;" class='alert alert-danger block'>
       <span class="glyphicon glyphicon-info-sign"></span> &nbsp;{{message}}
     </div>
 
-    <div class="centerVertical alert alert-info">
+    <div class="centerVertical alert alert-info block">
       <div class="form-group">
         <label for="username">Username</label>
         <input v-model="username" type="text" class="form-control" placeholder="Toto" autofocus>

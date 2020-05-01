@@ -27,7 +27,7 @@ router.get('/', function(req, res) {
 router.post('/login', function(req, res) {
 	
 
-	var username = req.body.username;
+	var username = "Guest#" + req.body.username;
 
 	//si le joueur existe déjà
 	if (gameServer.players[username]) {
