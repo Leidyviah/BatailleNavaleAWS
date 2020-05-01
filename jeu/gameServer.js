@@ -66,11 +66,13 @@ function gameServer(io) {
         this.games[gameName].player_one.quitGame();
       }
       if(this.games[gameName].player_two){
-        this.games[gameName].player_two.quitGame();
+        if(!this.games[gameName].player_two instanceof AI) {
+          this.games[gameName].player_two.quitGame();
+        }
       }
       delete this.games[gameName];
     }
-	};
+    };
 
 
 	
