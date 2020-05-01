@@ -255,15 +255,16 @@ var clientServer = function(gameServer, io) {
 		var player_two = self.getEnemyPlayer(socket).username;
 		var isia='false';
 		if(game.gameType!='multi'){
-         isia='true';
-         if(self.getUsername(socket)){
-         	player_one = self.getUsername(socket);
-         	player_two="IA";
-         }else{
-         	
-         	player_one="IA";
-         	player_two = self.getEnemyPlayer(socket).username;
-         }
+	         isia='true';
+	         if(self.getUsername(socket)==self.getEnemyPlayer(socket).username){
+	         	player_one="IA";
+	         	player_two = self.getEnemyPlayer(socket).username;
+	         	
+	         }else{
+	         	
+	         	player_one = self.getUsername(socket);
+	         	player_two="IA";
+	         }
 		}else{
 			player_one = self.getUsername(socket);
 		    player_two = self.getEnemyPlayer(socket).username;
