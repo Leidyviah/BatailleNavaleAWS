@@ -24,7 +24,7 @@ router.post('/', function(req, res) {
 	if(req.session.loggedin) {
     username = req.session.username
   } else {
-    username = req.body.username;
+    username = "Invite#" + req.body.username;
     if (gameServer.usernameAlreadyExists(username)) {
       res.status(406).send({message: "Username " + username + " exists"});
     }

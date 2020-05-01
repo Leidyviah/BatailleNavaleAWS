@@ -32,6 +32,7 @@ router.get('/', function(req, res) {
   }
   if(!req.session.loggedin){
     gameServer.removePlayer(username);
+    req.session.username = undefined;
     req.session.destroy();
   }
   
