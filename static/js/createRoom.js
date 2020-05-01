@@ -20,11 +20,9 @@ var createGame = new Vue({
 			this.messages = [];
       let error = false;
 			//si les infos ne sont pas correctement entrées
-      console.log(document.cookie); 
-			if (this.username == '') {
+			/*if (this.username == '') { 
 				this.messages.push('Add username');
-        error = true;
-      }
+      }*/
 
 			if (this.gameName == '') {
 				this.messages.push('Add room name')
