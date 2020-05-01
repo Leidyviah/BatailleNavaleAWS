@@ -25,10 +25,6 @@ router.get('/', function(req, res) {
       }
       if(enemy)
         io.sockets.to(enemy).emit('quit');
-      else {
-        gameServer.removeGame(game.name);
-        gameServer.updateAvailableGames();
-      }
       game.gameType = 'solo';
     }
     gameServer.removeGame(game.name);
