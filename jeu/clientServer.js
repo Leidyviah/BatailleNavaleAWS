@@ -251,12 +251,22 @@ var clientServer = function(gameServer, io) {
 		var db = require("../jeu/connexion_db.js");
 		var conn=db.getConnexionDb();
 		var game = self.getUserGame(socket);
-		var player_one = game.player_one.username;
-		var player_two = 'IA';
-		var isia='true';
-		if(game.gameType=='multi'){
-         isia='false';
-         player_two = game.player_two.username;
+		var player_one = self.getUsername(socket);
+		var player_two = self.getEnemyPlayer(socket).username;
+		var isia='false';
+		if(game.gameType!='multi'){
+         isia='true';
+         if(self.getUsername(socket)){
+         	player_one = self.getUsername(socket);
+         	player_two="IA";
+         }else{
+         	
+         	player_one="IA";
+         	player_two = self.getEnemyPlayer(socket).username;
+         }
+		}else{
+			player_one = self.getUsername(socket);
+		    player_two = self.getEnemyPlayer(socket).username;
 		}
 		let data = { player_one: player_one, player_two: player_two,isia: isia};
 		  let sql = "INSERT INTO parties SET ?";
