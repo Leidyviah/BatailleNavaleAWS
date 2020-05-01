@@ -61,13 +61,15 @@ function gameServer(io) {
 
 	//delete la partie
 	this.removeGame = function(gameName) {
-    if(this.games[gameName].player_one){
-      this.games[gameName].player_one.quitGame();
+    if(this.games[gameName]){
+      if(this.games[gameName].player_one){
+        this.games[gameName].player_one.quitGame();
+      }
+      if(this.games[gameName].player_two){
+        this.games[gameName].player_two.quitGame();
+      }
+      delete this.games[gameName];
     }
-    if(this.games[gameName].player_two){
-      this.games[gameName].player_two.quitGame();
-    }
-		delete this.games[gameName];
 	};
 
 
