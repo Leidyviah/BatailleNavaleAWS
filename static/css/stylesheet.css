@@ -14,6 +14,8 @@ body {
   background-repeat: no-repeat;
   font-family: 'Ubuntu', sans-serif;
 	color: white;
+  margin: 0;
+  padding: 0;
 }
 
 #infos_connexion {
