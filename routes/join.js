@@ -27,7 +27,7 @@ router.get('/', function(req, res) {
 router.post('/login', function(req, res) {
 	
 
-	var username = req.body.username;
+	var username = "Invite#" + req.body.username;
 
 	//si le joueur existe déjà
 	if (gameServer.players[username]) {
@@ -35,7 +35,7 @@ router.post('/login', function(req, res) {
 	}
 	else {//sinon on l'ajoute au serveur en sauvegardant dans sa session
 
-		req.session.username = "Invite#" + username; 
+		req.session.username = username; 
 		req.session.save();
 		gameServer.newPlayer(username);
 
