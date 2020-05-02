@@ -66,7 +66,7 @@ function gameServer(io) {
         this.games[gameName].player_one.quitGame();
       }
       if(this.games[gameName].player_two){
-        if(!this.games[gameName].player_two instanceof AI) {
+        if(!(this.games[gameName].player_two instanceof AI)) {
           this.games[gameName].player_two.quitGame();
         }
       }
